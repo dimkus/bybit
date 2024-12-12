@@ -36,6 +36,8 @@ const (
 	OrderTypeLimit = OrderType("Limit")
 	// OrderTypeMarket :
 	OrderTypeMarket = OrderType("Market")
+	// OrderTypeUnknown :
+	OrderTypeUnknown = OrderType("UNKNOWN")
 )
 
 // The unit for qty when create Spot market orders for UTA account.
