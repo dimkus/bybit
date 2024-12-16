@@ -421,3 +421,82 @@ const (
 	// StopOrderTypeFutureStop :
 	StopOrderTypeFutureStop = StopOrderTypeFuture("Stop")
 )
+
+// StopOrderType :
+type StopOrderType string
+
+const (
+	// StopOrderTypeTakeProfit :
+	StopOrderTypeTakeProfit = StopOrderType("TakeProfit")
+	// StopOrderTypeStopLoss :
+	StopOrderTypeStopLoss = StopOrderType("StopLoss")
+	// StopOrderTypeTrailingStop :
+	StopOrderTypeTrailingStop = StopOrderType("TrailingStop")
+	// StopOrderTypeStop :
+	StopOrderTypeStop = StopOrderType("Stop")
+	// StopOrderTypePartialTakeProfit :
+	StopOrderTypePartialTakeProfit = StopOrderType("PartialTakeProfit")
+	// StopOrderTypePartialStopLoss :
+	StopOrderTypePartialStopLoss = StopOrderType("PartialStopLoss")
+	// StopOrderTypeOcoOrder :
+	StopOrderTypeOcoOrder = StopOrderType("OcoOrder")
+	// StopOrderTypeMmRateClose :
+	StopOrderTypeMmRateClose = StopOrderType("MmRateClose")
+	// StopOrderTypeBidirectionalTpslOrder :
+	StopOrderTypeBidirectionalTpslOrder = StopOrderType("BidirectionalTpslOrder")
+)
+
+type CreateType string
+
+const (
+	// CreateByUser :
+	CreateByUser = CreateType("CreateByUser")
+	// CreateByAdminClosing :
+	CreateByAdminClosing = CreateType("CreateByAdminClosing")
+	// CreateBySettle :
+	CreateBySettle = CreateType("CreateBySettle")
+	// CreateByStopOrder :
+	CreateByStopOrder = CreateType("CreateByStopOrder")
+	// CreateByTakeProfit :
+	CreateByTakeProfit = CreateType("CreateByTakeProfit")
+	// CreateByPartialTakeProfit :
+	CreateByPartialTakeProfit = CreateType("CreateByPartialTakeProfit")
+	// CreateByStopLoss :
+	CreateByStopLoss = CreateType("CreateByStopLoss")
+	// CreateByPartialStopLoss :
+	CreateByPartialStopLoss = CreateType("CreateByPartialStopLoss")
+	// CreateByTrailingStop :
+	CreateByTrailingStop = CreateType("CreateByTrailingStop")
+	// CreateByLiq :
+	CreateByLiq = CreateType("CreateByLiq")
+	// CreateByTakeOverPassThrough :
+	CreateByTakeOverPassThrough = CreateType("CreateByTakeOver_PassThrough")
+	// CreateByAdlPassThrough :
+	CreateByAdlPassThrough = CreateType("CreateByAdl_PassThrough")
+	// CreateByBlockPassThrough :
+	CreateByBlockPassThrough = CreateType("CreateByBlock_PassThrough")
+	// CreateByBlockTradeMovePositionPassThrough :
+	CreateByBlockTradeMovePositionPassThrough = CreateType("CreateByBlockTradeMovePosition_PassThrough")
+	// CreateByClosing :
+	CreateByClosing = CreateType("CreateByClosing")
+	// CreateByFGridBot :
+	CreateByFGridBot = CreateType("CreateByFGridBot")
+	// CloseByFGridBot :
+	CloseByFGridBot = CreateType("CloseByFGridBot")
+	// CreateByTWAP :
+	CreateByTWAP = CreateType("CreateByTWAP")
+	// CreateByTVSignal :
+	CreateByTVSignal = CreateType("CreateByTVSignal")
+	// CreateByMmRateClose :
+	CreateByMmRateClose = CreateType("CreateByMmRateClose")
+	// CreateByMartingaleBot :
+	CreateByMartingaleBot = CreateType("CreateByMartingaleBot")
+	// CloseByMartingaleBot :
+	CloseByMartingaleBot = CreateType("CloseByMartingaleBot")
+	// CreateByIceBerg :
+	CreateByIceBerg = CreateType("CreateByIceBerg")
+	// CreateByArbitrage :
+	CreateByArbitrage = CreateType("CreateByArbitrage")
+	// CreateByDdh :
+	CreateByDdh = CreateType("CreateByDdh")
+)
