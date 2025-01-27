@@ -9,15 +9,36 @@ const (
 	AccountTypeFunding AccountType = "FUND"
 )
 
-// MarginMode :
+// MarginMode : margin mode
 type MarginMode string
 
 const (
-	// MarginModeRegular :
+	// MarginModeIsolated: ISOLATED_MARGIN
+	MarginModeIsolated = MarginMode("ISOLATED_MARGIN")
+	// MarginModeRegular : REGULAR_MARGIN (i.e. Cross margin)
 	MarginModeRegular = MarginMode("REGULAR_MARGIN")
-	// MarginModePortfolio :
+	// MarginModePortfolio : PORTFOLIO_MARGIN
 	MarginModePortfolio = MarginMode("PORTFOLIO_MARGIN")
 )
+
+// IsIsolated : isolated margin mode
+func (m MarginMode) IsIsolated() bool {
+	return m == MarginModeIsolated
+}
+
+// IsCross : cross margin mode
+func (m MarginMode) IsCross() bool {
+	return m == MarginModeRegular
+}
+
+// IsPortfolio : portfolio margin mode
+func (m MarginMode) IsPortfolio() bool {
+	return m == MarginModePortfolio
+}
+
+func (m MarginMode) String() string {
+	return string(m)
+}
 
 // CategoryV5 :
 type CategoryV5 string

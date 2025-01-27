@@ -3,10 +3,10 @@ package bybit
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"github.com/google/go-querystring/query"
 	"net/url"
 	"strings"
-
-	"github.com/google/go-querystring/query"
 )
 
 // V5AccountServiceI :
@@ -17,6 +17,9 @@ type V5AccountServiceI interface {
 	GetCollateralInfo(context.Context, V5GetCollateralInfoParam) (*V5GetCollateralInfoResponse, error)
 	GetAccountInfo(context.Context) (*V5GetAccountInfoResponse, error)
 	GetTransactionLog(context.Context, V5GetTransactionLogParam) (*V5GetTransactionLogResponse, error)
+	// SetMarginMode setMargin ModeISOLATED_MARGIN, REGULAR_MARGIN(i.e. Cross margin), PORTFOLIO_MARGIN
+	// https://bybit-exchange.github.io/docs/v5/account/set-margin-mode
+	SetMarginMode(ctx context.Context, param MarginMode) (*V5SetMarginModeResponse, error)
 }
 
 // V5AccountService :
@@ -306,4 +309,33 @@ func (s *V5AccountService) GetTransactionLog(ctx context.Context, param V5GetTra
 	}
 
 	return &res, nil
+}
+
+// V5SetMarginModeResponse : response for SetMarginMode
+type V5SetMarginModeResponse struct {
+	CommonV5Response `json:",inline"`
+}
+
+// setMarginModeQuery: query for SetMarginMode
+type setMarginModeQuery struct {
+	SetMarginMode MarginMode `json:"setMarginMode"`
+}
+
+// SetMarginMode : set margin mode
+func (s *V5AccountService) SetMarginMode(ctx context.Context, param MarginMode) (*V5SetMarginModeResponse, error) {
+	res := new(V5SetMarginModeResponse)
+
+	queryToSend := setMarginModeQuery{
+		SetMarginMode: param,
+	}
+
+	body, err := json.Marshal(queryToSend)
+	if err != nil {
+		return res, fmt.Errorf("json marshal: %w", err)
+	}
+
+	if err := s.client.postV5JSON(ctx, "/v5/account/set-margin-mode", body, res); err != nil {
+		return nil, err
+	}
+	return res, nil
 }
