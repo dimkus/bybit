@@ -24,6 +24,7 @@ type V5MarketServiceI interface {
 	GetHistoricalVolatility(context.Context, V5GetHistoricalVolatilityParam) (*V5GetHistoricalVolatilityResponse, error)
 	GetInsurance(context.Context, V5GetInsuranceParam) (*V5GetInsuranceResponse, error)
 	GetRiskLimit(context.Context, V5GetRiskLimitParam) (*V5GetRiskLimitResponse, error)
+	GetTime(ctx context.Context) (*V5GetTimeResponse, error)
 }
 
 // V5MarketService :
@@ -1099,6 +1100,28 @@ func (s *V5MarketService) GetRiskLimit(ctx context.Context, param V5GetRiskLimit
 	}
 
 	if err := s.client.getPublicly(ctx, "/v5/market/risk-limit", queryString, &res); err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}
+
+// V5GetTimeResponse :
+type V5GetTimeResponse struct {
+	CommonResponse `json:",inline"`
+	Result         V5GetTimeResult `json:"result"`
+}
+
+type V5GetTimeResult struct {
+	TimeSecond string `json:"timeSecond"`
+	TimeNano   string `json:"timeNano"`
+}
+
+// GetServerTime :
+func (s *V5MarketService) GetTime(ctx context.Context) (*V5GetTimeResponse, error) {
+	var res V5GetTimeResponse
+
+	if err := s.client.getPublicly(ctx, "/v5/market/time", nil, &res); err != nil {
 		return nil, err
 	}
 
