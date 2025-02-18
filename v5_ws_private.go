@@ -15,7 +15,7 @@ import (
 
 // V5WebsocketPrivateServiceI :
 type V5WebsocketPrivateServiceI interface {
-	Start(context.Context, ErrHandler) error
+	Start(ErrHandler) error
 	Subscribe() error
 	Run() error
 	Ping() error
@@ -40,6 +40,7 @@ type V5WebsocketPrivateServiceI interface {
 
 // V5WebsocketPrivateService :
 type V5WebsocketPrivateService struct {
+	ctx        context.Context
 	client     *WebSocketClient
 	connection *websocket.Conn
 
@@ -125,56 +126,86 @@ func (s *V5WebsocketPrivateService) Subscribe() error {
 type ErrHandler func(isWebsocketClosed bool, err error)
 
 // Start :
-func (s *V5WebsocketPrivateService) Start(ctx context.Context, errHandler ErrHandler) error {
-	done := make(chan struct{})
+func (s *V5WebsocketPrivateService) Start(errHandler ErrHandler) error {
+	err := s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+	if err != nil {
+		return err
+	}
 
-	go func() {
-		defer close(done)
+	s.connection.SetPongHandler(func(string) error {
+		return s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
+	})
+
+	err = s.Run()
+	if err != nil {
+		return err
+	}
+
+	ctxToRun, ctxToRunCancel := signal.NotifyContext(s.ctx, os.Interrupt)
+
+	go func(ctxToRun context.Context, s *V5WebsocketPrivateService) {
+		pingTicker := time.NewTicker(20 * time.Second)
+		defer pingTicker.Stop()
+
 		defer s.connection.Close()
-		_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
-		s.connection.SetPongHandler(func(string) error {
-			_ = s.connection.SetReadDeadline(time.Now().Add(60 * time.Second))
-			return nil
-		})
 
 		for {
-			if err := s.Run(); err != nil {
-				if errHandler == nil {
+			select {
+			case <-ctxToRun.Done():
+				s.client.debugf("caught websocket private service interrupt signal")
+				closeErr := s.Close()
+				if closeErr != nil {
+					if errHandler == nil {
+						return
+					}
+					errHandler(IsErrWebsocketClosed(closeErr), closeErr)
 					return
 				}
-				errHandler(IsErrWebsocketClosed(err), err)
 				return
+			case <-pingTicker.C:
+				pingErr := s.Ping()
+				if pingErr != nil {
+					ctxToRunCancel()
+
+					if errHandler == nil {
+						return
+					}
+					errHandler(IsErrWebsocketClosed(pingErr), pingErr)
+					return
+				}
 			}
 		}
-	}()
+	}(ctxToRun, s)
 
-	ticker := time.NewTicker(20 * time.Second)
-	defer ticker.Stop()
-
-	ctx, stop := signal.NotifyContext(ctx, os.Interrupt)
-	defer stop()
-
-	for {
-		select {
-		case <-done:
-			return nil
-		case <-ticker.C:
-			if err := s.Ping(); err != nil {
-				return err
-			}
-		case <-ctx.Done():
-			s.client.debugf("caught websocket private service interrupt signal")
-
-			if err := s.Close(); err != nil {
-				return err
-			}
+	go func(ctxToRun context.Context, s *V5WebsocketPrivateService) {
+		for {
 			select {
-			case <-done:
-			case <-time.After(time.Second):
+			case <-ctxToRun.Done():
+				s.client.debugf("caught websocket private service interrupt signal")
+				closeErr := s.Close()
+				if closeErr != nil {
+					if errHandler == nil {
+						return
+					}
+					errHandler(IsErrWebsocketClosed(closeErr), closeErr)
+					return
+				}
+				return
+			default:
+				runErr := s.Run()
+				if runErr != nil {
+					ctxToRunCancel()
+					if errHandler == nil {
+						return
+					}
+					errHandler(IsErrWebsocketClosed(runErr), runErr)
+					return
+				}
 			}
-			return nil
 		}
-	}
+	}(ctxToRun, s)
+
+	return nil
 }
 
 // Run :

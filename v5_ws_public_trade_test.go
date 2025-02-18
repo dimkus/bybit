@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"context"
 	"encoding/json"
 	"testing"
 
@@ -40,7 +41,7 @@ func TestWebsocketV5Public_Trade(t *testing.T) {
 	wsClient := NewTestWebsocketClient().
 		WithBaseURL(server.URL)
 
-	svc, err := wsClient.V5().Public(category)
+	svc, err := wsClient.V5().Public(context.Background(), category)
 	require.NoError(t, err)
 
 	{

@@ -1,6 +1,7 @@
 package bybit
 
 import (
+	"context"
 	"encoding/json"
 	"testing"
 
@@ -62,7 +63,7 @@ func TestV5WebsocketPrivate_Execution(t *testing.T) {
 		WithBaseURL(server.URL).
 		WithAuth("test", "test")
 
-	svc, err := wsClient.V5().Private()
+	svc, err := wsClient.V5().Private(context.Background())
 	require.NoError(t, err)
 
 	require.NoError(t, svc.Subscribe())
