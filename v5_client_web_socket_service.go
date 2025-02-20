@@ -30,6 +30,7 @@ func (s *V5WebsocketService) Public(ctx context.Context, category CategoryV5) (V
 	}
 	return &V5WebsocketPublicService{
 		client:              s.client,
+		ctx:                 ctx,
 		connection:          c,
 		category:            category,
 		paramOrderBookMap:   make(map[V5WebsocketPublicOrderBookParamKey]func(V5WebsocketPublicOrderBookResponse) error),
