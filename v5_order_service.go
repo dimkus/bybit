@@ -25,42 +25,41 @@ type V5OrderService struct {
 
 // V5CreateOrderParam :
 type V5CreateOrderParam struct {
-	Category  CategoryV5 `json:"category"`
-	Symbol    SymbolV5   `json:"symbol"`
-	Side      Side       `json:"side"`
-	OrderType OrderType  `json:"orderType"`
-	Qty       string     `json:"qty"`
-
+	OrderLinkID           *string           `json:"orderLinkId,omitempty"`
+	ReduceOnly            *bool             `json:"reduce_only,omitempty"`
+	MarketUnit            *MarketUnit       `json:"marketUnit,omitempty"`
+	SlOrderType           *OrderType        `json:"slOrderType,omitempty"`
+	TpOrderType           *OrderType        `json:"tpOrderType,omitempty"`
 	IsLeverage            *IsLeverage       `json:"isLeverage,omitempty"`
 	Price                 *string           `json:"price,omitempty"`
 	TriggerDirection      *TriggerDirection `json:"triggerDirection,omitempty"`
-	OrderFilter           *OrderFilter      `json:"orderFilter,omitempty"` // If not passed, Order by default
+	OrderFilter           *OrderFilter      `json:"orderFilter,omitempty"`
 	TriggerPrice          *string           `json:"triggerPrice,omitempty"`
 	TriggerBy             *TriggerBy        `json:"triggerBy,omitempty"`
-	OrderIv               *string           `json:"orderIv,omitempty"`     // option only.
-	TimeInForce           *TimeInForce      `json:"timeInForce,omitempty"` // If not passed, GTC is used by default
-	PositionIdx           *PositionIdx      `json:"positionIdx,omitempty"` // Under hedge-mode, this param is required
-	OrderLinkID           *string           `json:"orderLinkId,omitempty"`
-	TakeProfit            *string           `json:"takeProfit,omitempty"`
+	OrderIv               *string           `json:"orderIv,omitempty"`
+	TimeInForce           *TimeInForce      `json:"timeInForce,omitempty"`
+	PositionIdx           *PositionIdx      `json:"positionIdx,omitempty"`
+	SlLimitPrice          *string           `json:"slLimitPrice,omitempty"`
 	StopLoss              *string           `json:"stopLoss,omitempty"`
+	TpLimitPrice          *string           `json:"tpLimitPrice,omitempty"`
 	TpTriggerBy           *TriggerBy        `json:"tpTriggerBy,omitempty"`
 	SlTriggerBy           *TriggerBy        `json:"slTriggerBy,omitempty"`
-	ReduceOnly            *bool             `json:"reduce_only,omitempty"`
+	TakeProfit            *string           `json:"takeProfit,omitempty"`
 	CloseOnTrigger        *bool             `json:"closeOnTrigger,omitempty"`
 	SmpType               *string           `json:"smpType,omitempty"`
-	MarketMakerProtection *bool             `json:"mmp,omitempty"` // option only
+	MarketMakerProtection *bool             `json:"mmp,omitempty"`
 	TpSlMode              *TpSlMode         `json:"tpslMode,omitempty"`
-	TpLimitPrice          *string           `json:"tpLimitPrice,omitempty"`
-	SlLimitPrice          *string           `json:"slLimitPrice,omitempty"`
-	TpOrderType           *OrderType        `json:"tpOrderType,omitempty"`
-	SlOrderType           *OrderType        `json:"slOrderType,omitempty"`
-	MarketUnit            *MarketUnit       `json:"marketUnit,omitempty"` // The unit for qty when create Spot market orders for UTA account.
+	Category              CategoryV5        `json:"category"`
+	Symbol                SymbolV5          `json:"symbol"`
+	Qty                   string            `json:"qty"`
+	OrderType             OrderType         `json:"orderType"`
+	Side                  Side              `json:"side"`
 }
 
 // V5CreateOrderResponse :
 type V5CreateOrderResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5CreateOrderResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5CreateOrderResult :
@@ -87,20 +86,19 @@ func (s *V5OrderService) CreateOrder(ctx context.Context, param V5CreateOrderPar
 
 // V5AmendOrderParam :
 type V5AmendOrderParam struct {
-	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
-
+	Qty          *string    `json:"qty,omitempty"`
 	OrderID      *string    `json:"orderId,omitempty"`
 	OrderLinkID  *string    `json:"orderLinkId,omitempty"`
 	OrderIv      *string    `json:"orderIv,omitempty"`
 	TriggerPrice *string    `json:"triggerPrice,omitempty"`
-	Qty          *string    `json:"qty,omitempty"`
 	Price        *string    `json:"price,omitempty"`
 	TakeProfit   *string    `json:"takeProfit,omitempty"`
 	StopLoss     *string    `json:"stopLoss,omitempty"`
 	TpTriggerBy  *TriggerBy `json:"tpTriggerBy,omitempty"`
 	SlTriggerBy  *TriggerBy `json:"slTriggerBy,omitempty"`
 	TriggerBy    *TriggerBy `json:"triggerBy,omitempty"`
+	Symbol       SymbolV5   `json:"symbol"`
+	Category     CategoryV5 `json:"category"`
 }
 
 func (p V5AmendOrderParam) validate() error {
@@ -115,8 +113,8 @@ func (p V5AmendOrderParam) validate() error {
 
 // V5AmendOrderResponse :
 type V5AmendOrderResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5AmendOrderResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5AmendOrderResult :
@@ -147,18 +145,17 @@ func (s *V5OrderService) AmendOrder(ctx context.Context, param V5AmendOrderParam
 
 // V5CancelOrderParam :
 type V5CancelOrderParam struct {
-	Category CategoryV5 `json:"category"`
-	Symbol   SymbolV5   `json:"symbol"`
-
 	OrderID     *string      `json:"orderId,omitempty"`
 	OrderLinkID *string      `json:"orderLinkId,omitempty"`
-	OrderFilter *OrderFilter `json:"orderFilter,omitempty"` // If not passed, Order by default
+	OrderFilter *OrderFilter `json:"orderFilter,omitempty"`
+	Category    CategoryV5   `json:"category"`
+	Symbol      SymbolV5     `json:"symbol"`
 }
 
 // V5CancelOrderResponse :
 type V5CancelOrderResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5CancelOrderResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5CancelOrderResult :
@@ -189,39 +186,37 @@ func (s *V5OrderService) CancelOrder(ctx context.Context, param V5CancelOrderPar
 
 // V5GetOpenOrdersParam :
 type V5GetOpenOrdersParam struct {
-	Category CategoryV5 `url:"category"`
-
 	Symbol      *SymbolV5    `url:"symbol,omitempty"`
 	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
 	SettleCoin  *Coin        `url:"settleCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
 	OpenOnly    *int         `url:"openOnly,omitempty"`
-	OrderFilter *OrderFilter `url:"orderFilter,omitempty"` // If not passed, Order by default
+	OrderFilter *OrderFilter `url:"orderFilter,omitempty"`
 	Limit       *int         `url:"limit,omitempty"`
 	Cursor      *string      `url:"cursor,omitempty"`
+	Category    CategoryV5   `url:"category"`
 }
 
 // V5GetGetHistoryOrderssParam :
 type V5GetHistoryOrdersParam struct {
-	Category CategoryV5 `url:"category"`
-
 	Symbol      *SymbolV5    `url:"symbol,omitempty"`
 	BaseCoin    *Coin        `url:"baseCoin,omitempty"`
 	OrderID     *string      `url:"orderId,omitempty"`
 	OrderLinkID *string      `url:"orderLinkId,omitempty"`
-	OrderFilter *OrderFilter `url:"orderFilter,omitempty"` // If not passed, Order by default
+	OrderFilter *OrderFilter `url:"orderFilter,omitempty"`
 	OrderStatus *OrderStatus `url:"orderStatus,omitempty"`
 	StartTime   *int         `url:"startTime,omitempty"`
 	EndTime     *int         `url:"endTime,omitempty"`
 	Limit       *int         `url:"limit,omitempty"`
 	Cursor      *string      `url:"cursor,omitempty"`
+	Category    CategoryV5   `url:"category"`
 }
 
 // V5GetOrdersResponse :
 type V5GetOrdersResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetOrdersResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetOrdersResult :
@@ -232,8 +227,8 @@ type V5GetOrdersResult struct {
 }
 
 type V5GetOrder struct {
-	Symbol             SymbolV5    `json:"symbol"`
-	OrderType          OrderType   `json:"orderType"`
+	CreatedTime        string      `json:"createdTime"`
+	TpTriggerBy        string      `json:"tpTriggerBy"`
 	OrderLinkID        string      `json:"orderLinkId"`
 	OrderID            string      `json:"orderId"`
 	CancelType         string      `json:"cancelType"`
@@ -243,14 +238,14 @@ type V5GetOrder struct {
 	OrderStatus        OrderStatus `json:"orderStatus"`
 	TakeProfit         string      `json:"takeProfit"`
 	CumExecValue       string      `json:"cumExecValue"`
-	TriggerDirection   int         `json:"triggerDirection"`
+	TriggerBy          TriggerBy   `json:"triggerBy"`
 	IsLeverage         string      `json:"isLeverage"`
 	RejectReason       string      `json:"rejectReason"`
 	Price              string      `json:"price"`
 	OrderIv            string      `json:"orderIv"`
-	CreatedTime        string      `json:"createdTime"`
-	TpTriggerBy        string      `json:"tpTriggerBy"`
-	PositionIdx        int         `json:"positionIdx"`
+	OrderType          OrderType   `json:"orderType"`
+	StopLoss           string      `json:"stopLoss"`
+	Symbol             SymbolV5    `json:"symbol"`
 	TimeInForce        TimeInForce `json:"timeInForce"`
 	LeavesValue        string      `json:"leavesValue"`
 	UpdatedTime        string      `json:"updatedTime"`
@@ -259,12 +254,12 @@ type V5GetOrder struct {
 	CumExecFee         string      `json:"cumExecFee"`
 	LeavesQty          string      `json:"leavesQty"`
 	SlTriggerBy        string      `json:"slTriggerBy"`
-	CloseOnTrigger     bool        `json:"closeOnTrigger"`
-	CumExecQty         string      `json:"cumExecQty"`
-	ReduceOnly         bool        `json:"reduceOnly"`
 	Qty                string      `json:"qty"`
-	StopLoss           string      `json:"stopLoss"`
-	TriggerBy          TriggerBy   `json:"triggerBy"`
+	CumExecQty         string      `json:"cumExecQty"`
+	PositionIdx        int         `json:"positionIdx"`
+	TriggerDirection   int         `json:"triggerDirection"`
+	ReduceOnly         bool        `json:"reduceOnly"`
+	CloseOnTrigger     bool        `json:"closeOnTrigger"`
 }
 
 // GetOpenOrders :
@@ -310,12 +305,11 @@ func (s *V5OrderService) GetHistoryOrders(ctx context.Context, param V5GetHistor
 // V5CancelAllOrdersParam :
 // If you pass multiple of these params, the system will process one of param, which priority is symbol > baseCoin > settleCoin.
 type V5CancelAllOrdersParam struct {
-	Category CategoryV5 `json:"category"`
-
 	Symbol      *SymbolV5    `json:"symbol,omitempty"`
 	BaseCoin    *Coin        `json:"baseCoin,omitempty"`
 	SettleCoin  *Coin        `json:"settleCoin,omitempty"`
-	OrderFilter *OrderFilter `json:"orderFilter,omitempty"` // If not passed, Order by default
+	OrderFilter *OrderFilter `json:"orderFilter,omitempty"`
+	Category    CategoryV5   `json:"category"`
 }
 
 func (p V5CancelAllOrdersParam) validate() error {
@@ -332,8 +326,8 @@ func (p V5CancelAllOrdersParam) validate() error {
 
 // V5CancelAllOrdersResponse :
 type V5CancelAllOrdersResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5CancelAllOrdersResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5CancelAllOrdersResult :
@@ -395,8 +389,8 @@ type V5GetBorrowQuotaSpotParam struct {
 
 // V5CancelAllOrdersResponse :
 type V5BorrowQuotaSpotResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5BorrowQuotaSpotResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5CancelAllOrdersResult :

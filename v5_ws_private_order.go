@@ -55,17 +55,17 @@ func (s *V5WebsocketPrivateService) SubscribeOrder(
 type V5WebsocketPrivateOrderResponse struct {
 	ID           string                        `json:"id"`
 	Topic        V5WebsocketPrivateTopic       `json:"topic"`
-	CreationTime int64                         `json:"creationTime"`
 	Data         []V5WebsocketPrivateOrderData `json:"data"`
+	CreationTime int64                         `json:"creationTime"`
 }
 
 // V5WebsocketPrivateOrderData :
 type V5WebsocketPrivateOrderData struct {
-	AvgPrice           string           `json:"avgPrice"`
-	BlockTradeID       string           `json:"blockTradeId"`
+	OrderLinkID        string           `json:"orderLinkId"`
+	OrderType          OrderType        `json:"orderType"`
 	CancelType         string           `json:"cancelType"`
 	Category           string           `json:"category"`
-	CloseOnTrigger     bool             `json:"closeOnTrigger"`
+	UpdatedTime        string           `json:"updatedTime"`
 	CreatedTime        string           `json:"createdTime"`
 	CumExecFee         string           `json:"cumExecFee"`
 	CumExecQty         string           `json:"cumExecQty"`
@@ -77,12 +77,12 @@ type V5WebsocketPrivateOrderData struct {
 	IsLeverage         string           `json:"isLeverage"`
 	LastPriceOnCreated string           `json:"lastPriceOnCreated"`
 	OrderStatus        OrderStatus      `json:"orderStatus"`
-	OrderLinkID        string           `json:"orderLinkId"`
-	OrderType          OrderType        `json:"orderType"`
-	PositionIdx        int              `json:"positionIdx"`
+	BlockTradeID       string           `json:"blockTradeId"`
+	AvgPrice           string           `json:"avgPrice"`
+	TriggerPrice       string           `json:"triggerPrice"`
 	Price              string           `json:"price"`
 	Qty                string           `json:"qty"`
-	ReduceOnly         bool             `json:"reduceOnly"`
+	TriggerBy          TriggerBy        `json:"triggerBy"`
 	RejectReason       string           `json:"rejectReason"`
 	Side               Side             `json:"side"`
 	SlTriggerBy        TriggerBy        `json:"slTriggerBy"`
@@ -92,10 +92,10 @@ type V5WebsocketPrivateOrderData struct {
 	TakeProfit         string           `json:"takeProfit"`
 	TimeInForce        TimeInForce      `json:"timeInForce"`
 	TpTriggerBy        TriggerBy        `json:"tpTriggerBy"`
-	TriggerBy          TriggerBy        `json:"triggerBy"`
 	TriggerDirection   TriggerDirection `json:"triggerDirection"`
-	TriggerPrice       string           `json:"triggerPrice"`
-	UpdatedTime        string           `json:"updatedTime"`
+	PositionIdx        int              `json:"positionIdx"`
+	ReduceOnly         bool             `json:"reduceOnly"`
+	CloseOnTrigger     bool             `json:"closeOnTrigger"`
 }
 
 // Key :

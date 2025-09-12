@@ -54,8 +54,8 @@ func (s *V5WebsocketPublicService) SubscribeOrderBook(
 
 // V5WebsocketPublicOrderBookParamKey :
 type V5WebsocketPublicOrderBookParamKey struct {
-	Depth  int
 	Symbol SymbolV5
+	Depth  int
 }
 
 // Topic :
@@ -67,8 +67,8 @@ func (k *V5WebsocketPublicOrderBookParamKey) Topic() string {
 type V5WebsocketPublicOrderBookResponse struct {
 	Topic     string                         `json:"topic"`
 	Type      string                         `json:"type"`
-	TimeStamp int64                          `json:"ts"`
 	Data      V5WebsocketPublicOrderBookData `json:"data"`
+	TimeStamp int64                          `json:"ts"`
 }
 
 // V5WebsocketPublicOrderBookData :

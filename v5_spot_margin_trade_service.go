@@ -27,25 +27,25 @@ type V5GetVIPMarginDataParam struct {
 
 // V5GetVIPMarginDataResponse :
 type V5GetVIPMarginDataResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5VIPMarginDataResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5VIPMarginDataResult struct {
 	VipCoinList []struct {
-		List     []V5VIPMarginDataVipCoin `json:"list"`
 		VipLevel string                   `json:"vipLevel"`
+		List     []V5VIPMarginDataVipCoin `json:"list"`
 	} `json:"vipCoinList"`
 }
 
 type V5VIPMarginDataVipCoin struct {
-	Borrowable         bool   `json:"borrowable"`
 	CollateralRatio    string `json:"collateralRatio"`
 	Currency           string `json:"currency"`
 	HourlyBorrowRate   string `json:"hourlyBorrowRate"`
 	LiquidationOrder   string `json:"liquidationOrder"`
-	MarginCollateral   bool   `json:"marginCollateral"`
 	MaxBorrowingAmount string `json:"maxBorrowingAmount"`
+	Borrowable         bool   `json:"borrowable"`
+	MarginCollateral   bool   `json:"marginCollateral"`
 }
 
 func (s *V5SpotMarginTradeService) GetVIPMarginData(ctx context.Context, param V5GetVIPMarginDataParam) (*V5GetVIPMarginDataResponse, error) {
@@ -82,8 +82,8 @@ func (s *V5SpotMarginTradeService) SetLeverage(ctx context.Context, param V5SetM
 }
 
 type V5MarginStatusAndLeverageResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5MarginStatusAndLeverag `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5MarginStatusAndLeverag struct {

@@ -55,8 +55,8 @@ func (s *V5WebsocketPrivateService) SubscribeWallet(
 type V5WebsocketPrivateWalletResponse struct {
 	ID           string                         `json:"id"`
 	Topic        V5WebsocketPrivateTopic        `json:"topic"`
-	CreationTime int64                          `json:"creationTime"`
 	Data         []V5WebsocketPrivateWalletData `json:"data"`
+	CreationTime int64                          `json:"creationTime"`
 }
 
 // V5WebsocketPrivateWalletData :

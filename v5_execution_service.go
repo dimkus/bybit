@@ -17,8 +17,6 @@ type V5ExecutionService struct {
 
 // V5GetExecutionParam :
 type V5GetExecutionParam struct {
-	Category CategoryV5 `url:"category"`
-
 	Symbol      *SymbolV5   `url:"symbol,omitempty"`
 	OrderID     *string     `url:"orderId,omitempty"`
 	OrderLinkID *string     `url:"orderLinkId,omitempty"`
@@ -28,12 +26,13 @@ type V5GetExecutionParam struct {
 	ExecType    *ExecTypeV5 `url:"execType,omitempty"`
 	Limit       *int        `url:"limit,omitempty"`
 	Cursor      *string     `url:"cursor,omitempty"`
+	Category    CategoryV5  `url:"category"`
 }
 
 // V5GetExecutionListResponse :
 type V5GetExecutionListResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetExecutionListResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetExecutionListResult :
@@ -45,8 +44,8 @@ type V5GetExecutionListResult struct {
 
 // V5GetExecutionListItem :
 type V5GetExecutionListItem struct {
-	Symbol          SymbolV5   `json:"symbol"`
-	OrderID         string     `json:"orderId"`
+	ExecQty         string     `json:"execQty"`
+	IndexPrice      string     `json:"indexPrice"`
 	OrderLinkID     string     `json:"orderLinkId"`
 	Side            Side       `json:"side"`
 	OrderPrice      string     `json:"orderPrice"`
@@ -57,19 +56,19 @@ type V5GetExecutionListItem struct {
 	ExecFee         string     `json:"execFee"`
 	ExecID          string     `json:"execId"`
 	ExecPrice       string     `json:"execPrice"`
-	ExecQty         string     `json:"execQty"`
-	ExecType        ExecTypeV5 `json:"execType"`
+	OrderID         string     `json:"orderId"`
 	ExecValue       string     `json:"execValue"`
+	Symbol          SymbolV5   `json:"symbol"`
 	ExecTime        string     `json:"execTime"`
-	IsMaker         bool       `json:"isMaker"`
+	ClosedSize      string     `json:"closedSize"`
 	FeeRate         string     `json:"feeRate"`
 	TradeIv         string     `json:"tradeIv"`
 	MarkIv          string     `json:"markIv"`
 	MarkPrice       string     `json:"markPrice"`
-	IndexPrice      string     `json:"indexPrice"`
+	ExecType        ExecTypeV5 `json:"execType"`
 	UnderlyingPrice string     `json:"underlyingPrice"`
 	BlockTradeID    string     `json:"blockTradeId"`
-	ClosedSize      string     `json:"closedSize"`
+	IsMaker         bool       `json:"isMaker"`
 }
 
 func (s *V5ExecutionService) GetExecutionList(ctx context.Context, param V5GetExecutionParam) (*V5GetExecutionListResponse, error) {

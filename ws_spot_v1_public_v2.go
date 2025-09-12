@@ -64,9 +64,9 @@ type SpotWebsocketV1PublicV2TradeResponseParams struct {
 // SpotWebsocketV1PublicV2TradeContent :
 type SpotWebsocketV1PublicV2TradeContent struct {
 	TradeID        string `json:"v"`
-	Timestamp      int    `json:"t"`
 	Price          string `json:"p"`
 	Quantity       string `json:"q"`
+	Timestamp      int    `json:"t"`
 	IsBuySideTaker bool   `json:"m"`
 }
 

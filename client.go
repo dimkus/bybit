@@ -28,19 +28,15 @@ const (
 
 // Client :
 type Client struct {
-	httpClient *http.Client
-
-	debug  bool
-	logger *log.Logger
-
-	baseURL string
-	key     string
-	secret  string
-
-	referer string
-
+	httpClient               *http.Client
+	logger                   *log.Logger
 	checkResponseBody        checkResponseBodyFunc
+	baseURL                  string
+	key                      string
+	secret                   string
+	referer                  string
 	syncTimeDeltaNanoSeconds int64
+	debug                    bool
 }
 
 func (c *Client) debugf(format string, v ...interface{}) {

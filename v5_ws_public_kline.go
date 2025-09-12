@@ -66,14 +66,12 @@ func (k *V5WebsocketPublicKlineParamKey) Topic() string {
 type V5WebsocketPublicKlineResponse struct {
 	Topic     string                       `json:"topic"`
 	Type      string                       `json:"type"`
-	TimeStamp int64                        `json:"ts"`
 	Data      []V5WebsocketPublicKlineData `json:"data"`
+	TimeStamp int64                        `json:"ts"`
 }
 
 // V5WebsocketPublicKlineData :
 type V5WebsocketPublicKlineData struct {
-	Start     int64    `json:"start"`
-	End       int64    `json:"end"`
 	Interval  Interval `json:"interval"`
 	Open      string   `json:"open"`
 	Close     string   `json:"close"`
@@ -81,8 +79,10 @@ type V5WebsocketPublicKlineData struct {
 	Low       string   `json:"low"`
 	Volume    string   `json:"volume"`
 	Turnover  string   `json:"turnover"`
-	Confirm   bool     `json:"confirm"`
+	Start     int64    `json:"start"`
+	End       int64    `json:"end"`
 	Timestamp int64    `json:"timestamp"`
+	Confirm   bool     `json:"confirm"`
 }
 
 // Key :

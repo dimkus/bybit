@@ -55,14 +55,14 @@ func (s *V5WebsocketPrivateService) SubscribeExecution(
 type V5WebsocketPrivateExecutionResponse struct {
 	ID           string                            `json:"id"`
 	Topic        V5WebsocketPrivateTopic           `json:"topic"`
-	CreationTime int64                             `json:"creationTime"`
 	Data         []V5WebsocketPrivateExecutionData `json:"data"`
+	CreationTime int64                             `json:"creationTime"`
 }
 
 // V5WebsocketPrivateExecutionData :
 type V5WebsocketPrivateExecutionData struct {
-	Category        CategoryV5    `json:"category"`
-	Symbol          SymbolV5      `json:"symbol"`
+	MarkPrice       string        `json:"markPrice"`
+	OrderPrice      string        `json:"orderPrice"`
 	ExecFee         string        `json:"execFee"`
 	ExecID          string        `json:"execId"`
 	ExecPrice       string        `json:"execPrice"`
@@ -70,27 +70,27 @@ type V5WebsocketPrivateExecutionData struct {
 	ExecPnl         string        `json:"execPnl"`
 	ExecType        ExecTypeV5    `json:"execType"`
 	ExecValue       string        `json:"execValue"`
-	IsMaker         bool          `json:"isMaker"`
+	ClosedSize      string        `json:"closedSize"`
 	FeeRate         string        `json:"feeRate"`
 	TradeIv         string        `json:"tradeIv"`
 	MarkIv          string        `json:"markIv"`
 	BlockTradeID    string        `json:"blockTradeId"`
-	MarkPrice       string        `json:"markPrice"`
-	IndexPrice      string        `json:"indexPrice"`
-	UnderlyingPrice string        `json:"underlyingPrice"`
+	Symbol          SymbolV5      `json:"symbol"`
+	Category        CategoryV5    `json:"category"`
+	CreateType      CreateType    `json:"createType"`
 	LeavesQty       string        `json:"leavesQty"`
 	OrderID         string        `json:"orderId"`
 	OrderLinkID     string        `json:"orderLinkId"`
-	OrderPrice      string        `json:"orderPrice"`
+	IndexPrice      string        `json:"indexPrice"`
 	OrderQty        string        `json:"orderQty"`
-	CreateType      CreateType    `json:"createType"`
+	UnderlyingPrice string        `json:"underlyingPrice"`
 	OrderType       OrderType     `json:"orderType"`
 	StopOrderType   StopOrderType `json:"stopOrderType"`
 	Side            Side          `json:"side"`
 	ExecTime        string        `json:"execTime"`
 	IsLeverage      string        `json:"isLeverage"`
-	ClosedSize      string        `json:"closedSize"`
 	CrossSequence   int64         `json:"seq"`
+	IsMaker         bool          `json:"isMaker"`
 }
 
 // Key :

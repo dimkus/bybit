@@ -63,8 +63,8 @@ func (p V5CreateInternalTransferParam) validate() error {
 
 // V5CreateInternalTransferResponse :
 type V5CreateInternalTransferResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5CreateInternalTransferResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5CreateInternalTransferResult :
@@ -105,14 +105,14 @@ type V5GetInternalTransferRecordsParam struct {
 
 // V5GetInternalTransferRecordsResponse :
 type V5GetInternalTransferRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetInternalTransferRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetInternalTransferRecordsResult :
 type V5GetInternalTransferRecordsResult struct {
-	List           V5GetInternalTransferRecordsList `json:"list"`
 	NextPageCursor string                           `json:"nextPageCursor"`
+	List           V5GetInternalTransferRecordsList `json:"list"`
 }
 
 // V5GetInternalTransferRecordsList :
@@ -176,8 +176,8 @@ func (p V5CreateUniversalTransferParam) validate() error {
 }
 
 type V5CreateUniversalTransferResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5CreateInternalTransferResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5CreateUniversalTransferResult struct {
@@ -214,13 +214,13 @@ type V5GetUniversalTransferRecordsParam struct {
 }
 
 type V5GetUniversalTransferRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetUniversalTransferRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5GetUniversalTransferRecordsResult struct {
-	List           V5GetUniversalTransferRecordsList `json:"list"`
 	NextPageCursor string                            `json:"nextPageCursor"`
+	List           V5GetUniversalTransferRecordsList `json:"list"`
 }
 
 type V5GetUniversalTransferRecordsList []V5GetUniversalTransferRecordsItem
@@ -263,14 +263,14 @@ type V5GetDepositRecordsParam struct {
 
 // V5GetDepositRecordsResponse :
 type V5GetDepositRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetDepositRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetDepositRecordsResult :
 type V5GetDepositRecordsResult struct {
-	Rows           V5GetDepositRecordsRows `json:"rows"`
 	NextPageCursor string                  `json:"nextPageCursor"`
+	Rows           V5GetDepositRecordsRows `json:"rows"`
 }
 
 // V5GetDepositRecordsRows :
@@ -282,7 +282,6 @@ type V5GetDepositRecordsRow struct {
 	Chain         string          `json:"chain"`
 	Amount        string          `json:"amount"`
 	TxID          string          `json:"txID"`
-	Status        DepositStatusV5 `json:"status"`
 	ToAddress     string          `json:"toAddress"`
 	Tag           string          `json:"tag"`
 	DepositFee    string          `json:"depositFee"`
@@ -290,6 +289,7 @@ type V5GetDepositRecordsRow struct {
 	Confirmations string          `json:"confirmations"`
 	TxIndex       string          `json:"txIndex"`
 	BlockHash     string          `json:"blockHash"`
+	Status        DepositStatusV5 `json:"status"`
 }
 
 // GetDepositRecords :
@@ -310,25 +310,24 @@ func (s *V5AssetService) GetDepositRecords(ctx context.Context, param V5GetDepos
 
 // V5GetSubDepositRecordsParam :
 type V5GetSubDepositRecordsParam struct {
-	SubMemberID string `url:"subMemberId"`
-
-	Coin      *Coin   `url:"coin,omitempty"`
-	StartTime *int64  `url:"startTime,omitempty"` // Start time (ms). Default value: 30 days before the current time
-	EndTime   *int64  `url:"endTime,omitempty"`   // The start timestamp (ms)
-	Limit     *int    `url:"limit,omitempty"`     // Limit for data size per page. [1, 50]. Default: 50
-	Cursor    *string `url:"cursor,omitempty"`
+	Coin        *Coin   `url:"coin,omitempty"`
+	StartTime   *int64  `url:"startTime,omitempty"`
+	EndTime     *int64  `url:"endTime,omitempty"`
+	Limit       *int    `url:"limit,omitempty"`
+	Cursor      *string `url:"cursor,omitempty"`
+	SubMemberID string  `url:"subMemberId"`
 }
 
 // V5GetSubDepositRecordsResponse :
 type V5GetSubDepositRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetSubDepositRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetSubDepositRecordsResult :
 type V5GetSubDepositRecordsResult struct {
-	Rows           V5GetSubDepositRecordsRows `json:"rows"`
 	NextPageCursor string                     `json:"nextPageCursor"`
+	Rows           V5GetSubDepositRecordsRows `json:"rows"`
 }
 
 // V5GetSubDepositRecordsRows :
@@ -340,7 +339,6 @@ type V5GetSubDepositRecordsRow struct {
 	Chain         string          `json:"chain"`
 	Amount        string          `json:"amount"`
 	TxID          string          `json:"txID"`
-	Status        DepositStatusV5 `json:"status"`
 	ToAddress     string          `json:"toAddress"`
 	Tag           string          `json:"tag"`
 	DepositFee    string          `json:"depositFee"`
@@ -348,6 +346,7 @@ type V5GetSubDepositRecordsRow struct {
 	Confirmations string          `json:"confirmations"`
 	TxIndex       string          `json:"txIndex"`
 	BlockHash     string          `json:"blockHash"`
+	Status        DepositStatusV5 `json:"status"`
 }
 
 // GetSubDepositRecords :
@@ -377,14 +376,14 @@ type V5GetInternalDepositRecordsParam struct {
 
 // V5GetInternalDepositRecordsResponse :
 type V5GetInternalDepositRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetInternalDepositRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetInternalDepositRecordsResult :
 type V5GetInternalDepositRecordsResult struct {
-	Rows           V5GetInternalDepositRecordsRows `json:"rows"`
 	NextPageCursor string                          `json:"nextPageCursor"`
+	Rows           V5GetInternalDepositRecordsRows `json:"rows"`
 }
 
 // V5GetInternalDepositRecordsRows :
@@ -396,9 +395,9 @@ type V5GetInternalDepositRecordsRow struct {
 	Type        string                  `json:"type"`
 	Coin        Coin                    `json:"coin"`
 	Amount      string                  `json:"amount"`
-	Status      InternalDepositStatusV5 `json:"status"`
-	Address     string                  `json:"address"` // Email address or phone number
+	Address     string                  `json:"address"`
 	CreatedTime string                  `json:"createdTime"`
+	Status      InternalDepositStatusV5 `json:"status"`
 }
 
 // GetInternalDepositRecords :
@@ -418,8 +417,8 @@ func (s *V5AssetService) GetInternalDepositRecords(ctx context.Context, param V5
 }
 
 type V5GetMasterDepositAddressParam struct {
-	Coin      Coin    `url:"coin"`
 	ChainType *string `url:"chainType,omitempty"`
+	Coin      Coin    `url:"coin"`
 }
 
 // "coin": "USDT",
@@ -447,8 +446,8 @@ type V5GetMasterDepositAddressResult struct {
 }
 
 type V5GetMasterDepositAddressResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetMasterDepositAddressResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 func (s *V5AssetService) GetMasterDepositAddress(ctx context.Context, param V5GetMasterDepositAddressParam) (*V5GetMasterDepositAddressResponse, error) {
@@ -479,14 +478,14 @@ type V5GetWithdrawalRecordsParam struct {
 
 // V5GetWithdrawalRecordsResponse :
 type V5GetWithdrawalRecordsResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetWithdrawalRecordsResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetWithdrawalRecordsResult :
 type V5GetWithdrawalRecordsResult struct {
-	Rows           V5GetWithdrawalRecordsRows `json:"rows"`
 	NextPageCursor string                     `json:"nextPageCursor"`
+	Rows           V5GetWithdrawalRecordsRows `json:"rows"`
 }
 
 // V5GetWithdrawalRecordsRows :
@@ -496,7 +495,6 @@ type V5GetWithdrawalRecordsRows []V5GetWithdrawalRecordsRow
 type V5GetWithdrawalRecordsRow struct {
 	WithdrawID   string           `json:"withdrawId"`
 	TxID         string           `json:"txId"`
-	WithdrawType WithdrawTypeV5   `json:"withdrawType"`
 	Coin         Coin             `json:"coin"`
 	Chain        string           `json:"chain"`
 	Amount       string           `json:"amount"`
@@ -506,6 +504,7 @@ type V5GetWithdrawalRecordsRow struct {
 	Tag          string           `json:"tag"`
 	CreatedTime  string           `json:"createTime"`
 	UpdatedTime  string           `json:"updateTime"`
+	WithdrawType WithdrawTypeV5   `json:"withdrawType"`
 }
 
 // GetWithdrawalRecords :
@@ -531,8 +530,8 @@ type V5GetCoinInfoParam struct {
 
 // V5GetCoinInfoResponse :
 type V5GetCoinInfoResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetCoinInfoResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetCoinInfoResult :
@@ -594,8 +593,8 @@ type V5GetAllCoinsBalanceParam struct {
 
 // V5GetAllCoinsBalanceResponse :
 type V5GetAllCoinsBalanceResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetAllCoinsBalanceResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetAllCoinsBalanceResult :
@@ -639,8 +638,8 @@ func (s *V5AssetService) GetAllCoinsBalance(ctx context.Context, param V5GetAllC
 }
 
 type V5WithdrawResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5WithdrawResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5WithdrawResult struct {
@@ -648,17 +647,16 @@ type V5WithdrawResult struct {
 }
 
 type V5WithdrawParam struct {
-	Coin      Coin   `json:"coin"`
-	Address   string `json:"address"`
-	Amount    string `json:"amount"`
-	Timestamp int64  `json:"timestamp"`
-
 	Chain       *string      `json:"chain,omitempty"`
 	Tag         *string      `json:"tag,omitempty"`
 	ForceChain  *bool        `json:"forceChain,omitempty"`
 	AccountType *AccountType `json:"accountType,omitempty"`
 	FeeType     *int         `json:"feeType,omitempty"`
 	RequestID   *string      `json:"requestId,omitempty"`
+	Coin        Coin         `json:"coin"`
+	Address     string       `json:"address"`
+	Amount      string       `json:"amount"`
+	Timestamp   int64        `json:"timestamp"`
 }
 
 func (s *V5AssetService) Withdraw(ctx context.Context, param V5WithdrawParam) (*V5WithdrawResponse, error) {

@@ -16,8 +16,8 @@ type TimeServiceI interface {
 
 // GetServerTimeResponse :
 type GetServerTimeResponse struct {
-	CommonResponse `json:",inline"`
 	Result         GetServerTimeResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 type GetServerTimeResult struct {

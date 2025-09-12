@@ -29,8 +29,8 @@ type V5AccountService struct {
 
 // V5GetWalletBalanceResponse :
 type V5GetWalletBalanceResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5WalletBalanceResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5WalletBalanceResult :
@@ -114,8 +114,8 @@ type V5SetCollateralCoinParam struct {
 
 // V5SetCollateralCoinResponse :
 type V5SetCollateralCoinResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           interface{} `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // SetCollateralCoin :
@@ -143,8 +143,8 @@ type V5SetBatchCollateralCoinParam struct {
 }
 
 type V5SetBatchCollateralCoinResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5SetBatchCollateralCoinList `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 type V5SetBatchCollateralCoinList struct {
@@ -174,8 +174,8 @@ type V5GetCollateralInfoParam struct {
 
 // V5GetCollateralInfoResponse :
 type V5GetCollateralInfoResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetCollateralInfoResult
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetCollateralInfoResult :
@@ -185,19 +185,19 @@ type V5GetCollateralInfoResult struct {
 
 // V5GetCollateralInfoList :
 type V5GetCollateralInfoList struct {
-	Currency            string `json:"currency"`
+	FreeBorrowingAmount string `json:"freeBorrowingAmount"`
 	HourlyBorrowRate    string `json:"hourlyBorrowRate"`
 	MaxBorrowingAmount  string `json:"maxBorrowingAmount"`
 	FreeBorrowingLimit  string `json:"freeBorrowingLimit"`
 	FreeBorrowAmount    string `json:"freeBorrowAmount"`
 	BorrowAmount        string `json:"borrowAmount"`
-	FreeBorrowingAmount string `json:"freeBorrowingAmount"`
+	Currency            string `json:"currency"`
 	AvailableToBorrow   string `json:"availableToBorrow"`
-	Borrowable          bool   `json:"borrowable"`
 	BorrowUsageRate     string `json:"borrowUsageRate"`
+	CollateralRatio     string `json:"collateralRatio"`
+	Borrowable          bool   `json:"borrowable"`
 	MarginCollateral    bool   `json:"marginCollateral"`
 	CollateralSwitch    bool   `json:"collateralSwitch"`
-	CollateralRatio     string `json:"collateralRatio"`
 }
 
 // GetCollateralInfo :
@@ -218,8 +218,8 @@ func (s *V5AccountService) GetCollateralInfo(ctx context.Context, param V5GetCol
 
 // V5GetAccountInfoResponse :
 type V5GetAccountInfoResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5AccountInfoResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5AccountInfoResult :
@@ -258,8 +258,8 @@ type V5GetTransactionLogParam struct {
 
 // V5GetTransactionLogResponse :
 type V5GetTransactionLogResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetTransactionLogResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetTransactionLogResult :

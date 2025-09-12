@@ -65,17 +65,17 @@ func (k *V5WebsocketPublicLiquidationParamKey) Topic() string {
 type V5WebsocketPublicLiquidationResponse struct {
 	Topic     string                             `json:"topic"`
 	Type      string                             `json:"type"`
-	TimeStamp int64                              `json:"ts"`
 	Data      []V5WebsocketPublicLiquidationData `json:"data"`
+	TimeStamp int64                              `json:"ts"`
 }
 
 // V5WebsocketPublicLiquidationData :
 type V5WebsocketPublicLiquidationData struct {
-	UpdatedTime uint64   `json:"updatedTime"` // The updated timestamp (ms)
-	Symbol      SymbolV5 `json:"symbol"`      // Symbol name
-	Side        Side     `json:"side"`        // Position side. Buy,Sell. When you receive a Buy update, this means that a long position has been liquidated
-	Size        string   `json:"size"`        // Executed size
-	Price       string   `json:"price"`       // Bankruptcy price
+	Symbol      SymbolV5 `json:"symbol"`
+	Side        Side     `json:"side"`
+	Size        string   `json:"size"`
+	Price       string   `json:"price"`
+	UpdatedTime uint64   `json:"updatedTime"`
 }
 
 // Key :

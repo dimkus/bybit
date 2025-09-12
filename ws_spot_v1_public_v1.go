@@ -49,14 +49,13 @@ type SpotWebsocketV1PublicV1TradeParamKey struct {
 
 // SpotWebsocketV1PublicV1TradeResponse :
 type SpotWebsocketV1PublicV1TradeResponse struct {
-	Symbol         SymbolSpot                   `json:"symbol"`
-	SymbolName     string                       `json:"symbolName"`
-	Topic          SpotWebsocketV1PublicV1Topic `json:"topic"`
-	SendTime       int                          `json:"sendTime"`
-	IsFirstMessage bool                         `json:"f"`
-
-	Params SpotWebsocketV1PublicV1TradeResponseParams `json:"params"`
-	Data   []SpotWebsocketV1PublicV1TradeContent      `json:"data"`
+	Params         SpotWebsocketV1PublicV1TradeResponseParams `json:"params"`
+	Symbol         SymbolSpot                                 `json:"symbol"`
+	SymbolName     string                                     `json:"symbolName"`
+	Topic          SpotWebsocketV1PublicV1Topic               `json:"topic"`
+	Data           []SpotWebsocketV1PublicV1TradeContent      `json:"data"`
+	SendTime       int                                        `json:"sendTime"`
+	IsFirstMessage bool                                       `json:"f"`
 }
 
 // SpotWebsocketV1PublicV1TradeResponseParams :
@@ -68,9 +67,9 @@ type SpotWebsocketV1PublicV1TradeResponseParams struct {
 // SpotWebsocketV1PublicV1TradeContent :
 type SpotWebsocketV1PublicV1TradeContent struct {
 	TradeID        string `json:"v"`
-	Timestamp      int    `json:"t"`
 	Price          string `json:"p"`
 	Quantity       string `json:"q"`
+	Timestamp      int    `json:"t"`
 	IsBuySideTaker bool   `json:"m"`
 }
 

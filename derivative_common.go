@@ -87,10 +87,9 @@ type DerivativesOrderBookResultSeller struct {
 
 // DerivativesOrderBookParam :
 type DerivativesOrderBookParam struct {
+	Limit    *int               `url:"limit,omitempty"`
 	Symbol   SymbolDerivative   `url:"symbol"`
 	Category CategoryDerivative `url:"category"`
-
-	Limit *int `url:"limit,omitempty"`
 }
 
 // DerivativesOrderBook :
@@ -111,8 +110,8 @@ func (s *DerivativeCommonService) DerivativesOrderBook(ctx context.Context, para
 
 // DerivativesKlineResponse :
 type DerivativesKlineResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesKlineResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesKlineResult :
@@ -156,13 +155,12 @@ func (r *DerivativesKlineResultList) UnmarshalJSON(data []byte) error {
 
 // DerivativesKlineParam :
 type DerivativesKlineParam struct {
+	Limit    *int               `url:"limit,omitempty"`
 	Symbol   SymbolDerivative   `url:"symbol"`
 	Category CategoryDerivative `url:"category"`
 	Interval Interval           `url:"interval"`
-	Start    int64              `url:"start"` // timestamp point for result, in milliseconds
-	End      int64              `url:"end"`   // timestamp point for result, in milliseconds
-
-	Limit *int `url:"limit,omitempty"`
+	Start    int64              `url:"start"`
+	End      int64              `url:"end"`
 }
 
 // DerivativesKline :
@@ -187,8 +185,8 @@ func (s *DerivativeCommonService) DerivativesKline(ctx context.Context, param De
 
 // DerivativesTickersResponse :
 type DerivativesTickersResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesTickersResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesTickersResult :
@@ -224,9 +222,8 @@ type DerivativesTickersResultList struct {
 
 // DerivativesTickersParam :
 type DerivativesTickersParam struct {
+	Symbol   *SymbolDerivative  `url:"symbol,omitempty"`
 	Category CategoryDerivative `url:"category"`
-
-	Symbol *SymbolDerivative `url:"symbol,omitempty"`
 }
 
 // DerivativesTickers :
@@ -251,8 +248,8 @@ func (s *DerivativeCommonService) DerivativesTickers(ctx context.Context, param 
 
 // DerivativesTickersForOptionResponse :
 type DerivativesTickersForOptionResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesTickersForOptionResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesTickersForOptionResult :
@@ -311,14 +308,15 @@ func (s *DerivativeCommonService) DerivativesTickersForOption(ctx context.Contex
 
 // DerivativesInstrumentsResponse :
 type DerivativesInstrumentsResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesInstrumentsResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesInstrumentsResult :
 type DerivativesInstrumentsResult struct {
-	Category CategoryDerivative `json:"category"`
-	List     []struct {
+	Category       CategoryDerivative `json:"category"`
+	NextPageCursor string             `json:"nextPageCursor"`
+	List           []struct {
 		Symbol          SymbolDerivative       `json:"symbol"`
 		ContractType    ContractTypeDerivative `json:"contractType"`
 		Status          StatusDerivative       `json:"status"`
@@ -344,16 +342,14 @@ type DerivativesInstrumentsResult struct {
 			QtyStep       string `json:"qtyStep"`
 		} `json:"lotSizeFilter"`
 	} `json:"list"`
-	NextPageCursor string `json:"nextPageCursor"`
 }
 
 // DerivativesInstrumentsParam :
 type DerivativesInstrumentsParam struct {
+	Symbol   *SymbolDerivative  `url:"symbol,omitempty"`
+	Limit    *int               `url:"limit,omitempty"`
+	Cursor   *string            `url:"cursor,omitempty"`
 	Category CategoryDerivative `url:"category"`
-
-	Symbol *SymbolDerivative `url:"symbol,omitempty"`
-	Limit  *int              `url:"limit,omitempty"`
-	Cursor *string           `url:"cursor,omitempty"`
 }
 
 // DerivativesInstruments :
@@ -384,9 +380,8 @@ type DerivativesInstrumentsForOptionResponse struct {
 
 // DerivativesInstrumentsForOptionResult :
 type DerivativesInstrumentsForOptionResult struct {
-	ResultTotalSize int    `json:"resultTotalSize"`
-	Cursor          string `json:"cursor"`
-	List            []struct {
+	Cursor string `json:"cursor"`
+	List   []struct {
 		Category        CategoryDerivative `json:"category"`
 		Symbol          SymbolDerivative   `json:"symbol"`
 		Status          StatusDerivative   `json:"status"`
@@ -408,6 +403,7 @@ type DerivativesInstrumentsForOptionResult struct {
 			QtyStep     string `json:"qtyStep"`
 		} `json:"lotSizeFilter"`
 	} `json:"dataList"`
+	ResultTotalSize int `json:"resultTotalSize"`
 }
 
 // DerivativesInstrumentsForOptionParam :
@@ -436,8 +432,8 @@ func (s *DerivativeCommonService) DerivativesInstrumentsForOption(ctx context.Co
 
 // DerivativesMarkPriceKlineResponse :
 type DerivativesMarkPriceKlineResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesMarkPriceKlineResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesMarkPriceKlineResult :
@@ -477,13 +473,12 @@ func (r *DerivativesMarkPriceKlineResultListItem) UnmarshalJSON(data []byte) err
 
 // DerivativesMarkPriceKlineParam :
 type DerivativesMarkPriceKlineParam struct {
+	Limit    *int               `url:"limit,omitempty"`
 	Category CategoryDerivative `url:"category"`
 	Symbol   SymbolDerivative   `url:"symbol"`
 	Interval Interval           `url:"interval"`
-	Start    int64              `url:"start"` // timestamp point for result, in milliseconds
-	End      int64              `url:"end"`   // timestamp point for result, in milliseconds
-
-	Limit *int `url:"limit,omitempty"`
+	Start    int64              `url:"start"`
+	End      int64              `url:"end"`
 }
 
 // DerivativesMarkPriceKline :
@@ -504,8 +499,8 @@ func (s *DerivativeCommonService) DerivativesMarkPriceKline(ctx context.Context,
 
 // DerivativesIndexPriceKlineResponse :
 type DerivativesIndexPriceKlineResponse struct {
-	CommonV3Response `json:",inline"`
 	Result           DerivativesIndexPriceKlineResult `json:"result"`
+	CommonV3Response `json:",inline"`
 }
 
 // DerivativesIndexPriceKlineResult :
@@ -545,13 +540,12 @@ func (r *DerivativesIndexPriceKlineResultListItem) UnmarshalJSON(data []byte) er
 
 // DerivativesIndexPriceKlineParam :
 type DerivativesIndexPriceKlineParam struct {
+	Limit    *int               `url:"limit,omitempty"`
 	Category CategoryDerivative `url:"category"`
 	Symbol   SymbolDerivative   `url:"symbol"`
 	Interval Interval           `url:"interval"`
-	Start    int64              `url:"start"` // timestamp point for result, in milliseconds
-	End      int64              `url:"end"`   // timestamp point for result, in milliseconds
-
-	Limit *int `url:"limit,omitempty"`
+	Start    int64              `url:"start"`
+	End      int64              `url:"end"`
 }
 
 // DerivativesIndexPriceKline :

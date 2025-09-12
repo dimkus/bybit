@@ -40,16 +40,14 @@ type V5WebsocketPrivateServiceI interface {
 
 // V5WebsocketPrivateService :
 type V5WebsocketPrivateService struct {
-	ctx        context.Context
-	client     *WebSocketClient
-	connection *websocket.Conn
-
-	mu sync.Mutex
-
+	ctx               context.Context
+	client            *WebSocketClient
+	connection        *websocket.Conn
 	paramOrderMap     map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivateOrderResponse) error
 	paramPositionMap  map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivatePositionResponse) error
 	paramExecutionMap map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivateExecutionResponse) error
 	paramWalletMap    map[V5WebsocketPrivateParamKey]func(V5WebsocketPrivateWalletResponse) error
+	mu                sync.Mutex
 }
 
 const (

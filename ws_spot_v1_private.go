@@ -46,10 +46,10 @@ type SpotWebsocketV1PrivateOutboundAccountInfoResponse struct {
 type SpotWebsocketV1PrivateOutboundAccountInfoResponseContent struct {
 	EventType            SpotWebsocketV1PrivateEventType                                        `json:"e"`
 	Timestamp            string                                                                 `json:"E"`
+	WalletBalanceChanges []SpotWebsocketV1PrivateOutboundAccountInfoResponseWalletBalanceChange `json:"B"`
 	AllowTrade           bool                                                                   `json:"T"`
 	AllowWithdraw        bool                                                                   `json:"W"`
 	AllowWDeposit        bool                                                                   `json:"D"`
-	WalletBalanceChanges []SpotWebsocketV1PrivateOutboundAccountInfoResponseWalletBalanceChange `json:"B"`
 }
 
 // SpotWebsocketV1PrivateOutboundAccountInfoResponseWalletBalanceChange :

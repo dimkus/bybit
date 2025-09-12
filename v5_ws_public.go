@@ -48,18 +48,16 @@ type V5WebsocketPublicServiceI interface {
 
 // V5WebsocketPublicService :
 type V5WebsocketPublicService struct {
-	client     *WebSocketClient
-	connection *websocket.Conn
-	category   CategoryV5
-	ctx        context.Context
-
-	mu sync.Mutex
-
+	ctx                 context.Context
+	client              *WebSocketClient
+	connection          *websocket.Conn
 	paramOrderBookMap   map[V5WebsocketPublicOrderBookParamKey]func(V5WebsocketPublicOrderBookResponse) error
 	paramKlineMap       map[V5WebsocketPublicKlineParamKey]func(V5WebsocketPublicKlineResponse) error
 	paramTickerMap      map[V5WebsocketPublicTickerParamKey]func(V5WebsocketPublicTickerResponse) error
 	paramTradeMap       map[V5WebsocketPublicTradeParamKey]func(V5WebsocketPublicTradeResponse) error
 	paramLiquidationMap map[V5WebsocketPublicLiquidationParamKey]func(V5WebsocketPublicLiquidationResponse) error
+	category            CategoryV5
+	mu                  sync.Mutex
 }
 
 const (

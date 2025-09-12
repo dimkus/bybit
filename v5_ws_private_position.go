@@ -55,16 +55,16 @@ func (s *V5WebsocketPrivateService) SubscribePosition(
 type V5WebsocketPrivatePositionResponse struct {
 	ID           string                           `json:"id"`
 	Topic        V5WebsocketPrivateTopic          `json:"topic"`
-	CreationTime int64                            `json:"creationTime"`
 	Data         []V5WebsocketPrivatePositionData `json:"data"`
+	CreationTime int64                            `json:"creationTime"`
 }
 
 // V5WebsocketPrivatePositionData :
 type V5WebsocketPrivatePositionData struct {
-	AutoAddMargin   int        `json:"autoAddMargin"`
-	PositionIdx     int        `json:"positionIdx"`
-	TradeMode       int        `json:"tradeMode"`
-	RiskID          int        `json:"riskId"`
+	PositionBalance string     `json:"positionBalance"`
+	BustPrice       string     `json:"bustPrice"`
+	PositionStatus  string     `json:"positionStatus"`
+	Category        CategoryV5 `json:"category"`
 	RiskLimitValue  string     `json:"riskLimitValue"`
 	Symbol          SymbolV5   `json:"symbol"`
 	Side            Side       `json:"side"`
@@ -72,10 +72,10 @@ type V5WebsocketPrivatePositionData struct {
 	EntryPrice      string     `json:"entryPrice"`
 	Leverage        string     `json:"leverage"`
 	PositionValue   string     `json:"positionValue"`
-	MarkPrice       string     `json:"markPrice"`
-	PositionBalance string     `json:"positionBalance"`
-	PositionIM      string     `json:"positionIM"`
 	PositionMM      string     `json:"positionMM"`
+	PositionIM      string     `json:"positionIM"`
+	LiqPrice        string     `json:"liqPrice"`
+	MarkPrice       string     `json:"markPrice"`
 	TakeProfit      string     `json:"takeProfit"`
 	StopLoss        string     `json:"stopLoss"`
 	TrailingStop    string     `json:"trailingStop"`
@@ -84,10 +84,10 @@ type V5WebsocketPrivatePositionData struct {
 	CreatedTime     string     `json:"CreatedTime"`
 	UpdatedTime     string     `json:"updatedTime"`
 	TpslMode        TpSlMode   `json:"tpslMode"`
-	LiqPrice        string     `json:"liqPrice"`
-	BustPrice       string     `json:"bustPrice"`
-	Category        CategoryV5 `json:"category"`
-	PositionStatus  string     `json:"positionStatus"`
+	AutoAddMargin   int        `json:"autoAddMargin"`
+	PositionIdx     int        `json:"positionIdx"`
+	RiskID          int        `json:"riskId"`
+	TradeMode       int        `json:"tradeMode"`
 }
 
 // Key :

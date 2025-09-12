@@ -63,20 +63,20 @@ func (k *V5WebsocketPublicTickerParamKey) Topic() string {
 
 // V5WebsocketPublicTickerResponse :
 type V5WebsocketPublicTickerResponse struct {
+	Data      V5WebsocketPublicTickerData `json:"data"`
 	Topic     string                      `json:"topic"`
 	Type      string                      `json:"type"`
+	ID        string                      `json:"id,omitempty"`
 	TimeStamp int64                       `json:"ts"`
 	CrossSeq  int64                       `json:"cs,omitempty"`
-	ID        string                      `json:"id,omitempty"`
-	Data      V5WebsocketPublicTickerData `json:"data"`
 }
 
 // V5WebsocketPublicTickerData :
 type V5WebsocketPublicTickerData struct {
-	category      CategoryV5
 	LinearInverse *V5WebsocketPublicTickerLinearInverseResult
 	Option        *V5WebsocketPublicTickerOptionResult
 	Spot          *V5WebsocketPublicTickerSpotResult
+	category      CategoryV5
 }
 
 // V5WebsocketPublicTickerLinearInverseResult :

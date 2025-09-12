@@ -52,17 +52,16 @@ type FutureUSDTPerpetualService struct {
 
 // ListLinearKlineParam :
 type ListLinearKlineParam struct {
+	Limit    *int         `url:"limit,omitempty"`
 	Symbol   SymbolFuture `url:"symbol"`
 	Interval Interval     `url:"interval"`
 	From     int64        `url:"from"`
-
-	Limit *int `url:"limit,omitempty"`
 }
 
 // ListLinearKlineResponse :
 type ListLinearKlineResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []ListLinearKlineResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ListLinearKlineResult :
@@ -109,47 +108,46 @@ type CreateLinearOrderResult struct {
 
 // CreateLinearOrder :
 type CreateLinearOrder struct {
-	OrderID        string          `json:"order_id"`
-	UserID         int             `json:"user_id"`
+	OrderLinkID    string          `json:"order_link_id"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	OrderID        string          `json:"order_id"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	LastExecPrice  float64         `json:"last_exec_price"`
-	CumExecQty     float64         `json:"cum_exec_qty"`
-	CumExecValue   float64         `json:"cum_exec_value"`
-	CumExecFee     float64         `json:"cum_exec_fee"`
-	ReduceOnly     bool            `json:"reduce_only"`
-	CloseOnTrigger bool            `json:"close_on_trigger"`
-	OrderLinkID    string          `json:"order_link_id"`
-	CreatedTime    string          `json:"created_time"`
 	UpdatedTime    string          `json:"updated_time"`
+	CreatedTime    string          `json:"created_time"`
+	Price          float64         `json:"price"`
+	CumExecFee     float64         `json:"cum_exec_fee"`
+	CumExecValue   float64         `json:"cum_exec_value"`
+	CumExecQty     float64         `json:"cum_exec_qty"`
+	LastExecPrice  float64         `json:"last_exec_price"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	Qty            float64         `json:"qty"`
+	UserID         int             `json:"user_id"`
+	ReduceOnly     bool            `json:"reduce_only"`
+	CloseOnTrigger bool            `json:"close_on_trigger"`
 }
 
 // CreateLinearOrderParam :
 type CreateLinearOrderParam struct {
-	Side           Side         `json:"side"`
-	Symbol         SymbolFuture `json:"symbol"`
-	OrderType      OrderType    `json:"order_type"`
-	Qty            float64      `json:"qty"`
-	TimeInForce    TimeInForce  `json:"time_in_force"`
-	ReduceOnly     bool         `json:"reduce_only"`
-	CloseOnTrigger bool         `json:"close_on_trigger"`
-
-	Price       *float64         `json:"price,omitempty"`
-	TakeProfit  *float64         `json:"take_profit,omitempty"`
-	StopLoss    *float64         `json:"stop_loss,omitempty"`
-	TpTriggerBy *TriggerByFuture `json:"tp_trigger_by,omitempty"`
-	SlTriggerBy *TriggerByFuture `json:"sl_trigger_by,omitempty"`
-	OrderLinkID *string          `json:"order_link_id,omitempty"`
-	PositionIdx *int             `json:"position_idx,omitempty"`
+	SlTriggerBy    *TriggerByFuture `json:"sl_trigger_by,omitempty"`
+	PositionIdx    *int             `json:"position_idx,omitempty"`
+	OrderLinkID    *string          `json:"order_link_id,omitempty"`
+	Price          *float64         `json:"price,omitempty"`
+	TakeProfit     *float64         `json:"take_profit,omitempty"`
+	StopLoss       *float64         `json:"stop_loss,omitempty"`
+	TpTriggerBy    *TriggerByFuture `json:"tp_trigger_by,omitempty"`
+	Symbol         SymbolFuture     `json:"symbol"`
+	OrderType      OrderType        `json:"order_type"`
+	Side           Side             `json:"side"`
+	TimeInForce    TimeInForce      `json:"time_in_force"`
+	Qty            float64          `json:"qty"`
+	CloseOnTrigger bool             `json:"close_on_trigger"`
+	ReduceOnly     bool             `json:"reduce_only"`
 }
 
 // CreateLinearOrder :
@@ -170,52 +168,51 @@ func (s *FutureUSDTPerpetualService) CreateLinearOrder(ctx context.Context, para
 
 // ListLinearOrderResponse :
 type ListLinearOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         ListLinearOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ListLinearOrderResult :
 type ListLinearOrderResult struct {
-	CurrentPage int                            `json:"current_page"`
 	Content     []ListLinearOrderResultContent `json:"data"`
+	CurrentPage int                            `json:"current_page"`
 }
 
 // ListLinearOrderResultContent :
 type ListLinearOrderResultContent struct {
-	OrderID        string          `json:"order_id"`
-	UserID         int             `json:"user_id"`
+	OrderLinkID    string          `json:"order_link_id"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	OrderID        string          `json:"order_id"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	LastExecPrice  float64         `json:"last_exec_price"`
-	CumExecQty     float64         `json:"cum_exec_qty"`
-	CumExecValue   float64         `json:"cum_exec_value"`
-	CumExecFee     float64         `json:"cum_exec_fee"`
-	ReduceOnly     bool            `json:"reduce_only"`
-	CloseOnTrigger bool            `json:"close_on_trigger"`
-	OrderLinkID    string          `json:"order_link_id"`
-	CreatedTime    string          `json:"created_time"`
 	UpdatedTime    string          `json:"updated_time"`
+	CreatedTime    string          `json:"created_time"`
+	Price          float64         `json:"price"`
+	CumExecFee     float64         `json:"cum_exec_fee"`
+	CumExecValue   float64         `json:"cum_exec_value"`
+	CumExecQty     float64         `json:"cum_exec_qty"`
+	LastExecPrice  float64         `json:"last_exec_price"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	Qty            float64         `json:"qty"`
+	UserID         int             `json:"user_id"`
+	ReduceOnly     bool            `json:"reduce_only"`
+	CloseOnTrigger bool            `json:"close_on_trigger"`
 }
 
 // ListLinearOrderParam :
 type ListLinearOrderParam struct {
-	Symbol SymbolFuture `url:"symbol"`
-
 	OrderID     *string      `url:"order_id,omitempty"`
 	OrderLinkID *string      `url:"order_link_id,omitempty"`
 	Order       *Order       `url:"order,omitempty"`
 	Page        *int         `url:"page,omitempty"`
 	Limit       *int         `url:"limit,omitempty"`
 	OrderStatus *OrderStatus `url:"order_status,omitempty"`
+	Symbol      SymbolFuture `url:"symbol"`
 }
 
 // ListLinearOrder :
@@ -236,32 +233,32 @@ func (s *FutureUSDTPerpetualService) ListLinearOrder(ctx context.Context, param 
 
 // ListLinearPositionResponse :
 type ListLinearPositionResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []ListLinearPositionResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ListLinearPositionResult :
 type ListLinearPositionResult struct {
-	UserID              int          `json:"user_id"`
+	TpSlMode            TpSlMode     `json:"tp_sl_mode"`
 	Symbol              SymbolFuture `json:"symbol"`
 	Side                Side         `json:"side"`
-	Size                float64      `json:"size"`
-	PositionValue       float64      `json:"position_value"`
+	FreeQty             float64      `json:"free_qty"`
+	OccClosingFee       float64      `json:"occ_closing_fee"`
 	EntryPrice          float64      `json:"entry_price"`
 	LiqPrice            float64      `json:"liq_price"`
 	BustPrice           float64      `json:"bust_price"`
 	Leverage            float64      `json:"leverage"`
 	AutoAddMargin       float64      `json:"auto_add_margin"`
-	IsIsolated          bool         `json:"is_isolated"`
+	RiskID              int          `json:"risk_id"`
 	PositionMargin      float64      `json:"position_margin"`
-	OccClosingFee       float64      `json:"occ_closing_fee"`
+	PositionValue       float64      `json:"position_value"`
 	RealisedPnl         float64      `json:"realised_pnl"`
 	CumRealisedPnl      float64      `json:"cum_realised_pnl"`
-	FreeQty             float64      `json:"free_qty"`
-	TpSlMode            TpSlMode     `json:"tp_sl_mode"`
+	UserID              int          `json:"user_id"`
+	Size                float64      `json:"size"`
 	DeleverageIndicator int          `json:"deleverage_indicator"`
 	UnrealisedPnl       float64      `json:"unrealised_pnl"`
-	RiskID              int          `json:"risk_id"`
+	IsIsolated          bool         `json:"is_isolated"`
 }
 
 // ListLinearPosition :
@@ -280,14 +277,14 @@ func (s *FutureUSDTPerpetualService) ListLinearPosition(ctx context.Context, sym
 
 // ListLinearPositionsResponse :
 type ListLinearPositionsResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []ListLinearPositionsResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ListLinearPositionsResult :
 type ListLinearPositionsResult struct {
-	IsValid                  bool `json:"is_valid"`
 	ListLinearPositionResult `json:"data,inline"`
+	IsValid                  bool `json:"is_valid"`
 }
 
 // ListLinearPositions :
@@ -303,8 +300,8 @@ func (s *FutureUSDTPerpetualService) ListLinearPositions(ctx context.Context) (*
 
 // CancelLinearOrderResponse :
 type CancelLinearOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         CancelLinearOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // CancelLinearOrderResult :
@@ -319,10 +316,9 @@ type CancelLinearOrder struct {
 
 // CancelLinearOrderParam :
 type CancelLinearOrderParam struct {
-	Symbol SymbolFuture `json:"symbol"`
-
-	OrderID     *string `json:"order_id,omitempty"`
-	OrderLinkID *string `json:"order_link_id,omitempty"`
+	OrderID     *string      `json:"order_id,omitempty"`
+	OrderLinkID *string      `json:"order_link_id,omitempty"`
+	Symbol      SymbolFuture `json:"symbol"`
 }
 
 // CancelLinearOrder :
@@ -380,9 +376,6 @@ type LinearTradingStopResponse struct {
 
 // LinearTradingStopParam :
 type LinearTradingStopParam struct {
-	Symbol SymbolFuture `json:"symbol"`
-	Side   Side         `json:"side"`
-
 	TakeProfit   *float64         `json:"take_profit,omitempty"`
 	StopLoss     *float64         `json:"stop_loss,omitempty"`
 	TrailingStop *float64         `json:"trailing_stop,omitempty"`
@@ -391,6 +384,8 @@ type LinearTradingStopParam struct {
 	SlSize       *float64         `json:"sl_size,omitempty"`
 	TpSize       *float64         `json:"tp_size,omitempty"`
 	PositionIdx  *int             `json:"position_idx,omitempty"`
+	Symbol       SymbolFuture     `json:"symbol"`
+	Side         Side             `json:"side"`
 }
 
 // LinearTradingStop :
@@ -411,14 +406,14 @@ func (s *FutureUSDTPerpetualService) LinearTradingStop(ctx context.Context, para
 
 // LinearExecutionListResponse :
 type LinearExecutionListResponse struct {
-	CommonResponse `json:",inline"`
 	Result         LinearExecutionListResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // LinearExecutionListResult :
 type LinearExecutionListResult struct {
-	CurrentPage          int                   `json:"current_page"`
 	LinearExecutionLists []LinearExecutionList `json:"data"`
+	CurrentPage          int                   `json:"current_page"`
 }
 
 // LinearExecutionList :
@@ -427,30 +422,29 @@ type LinearExecutionList struct {
 	OrderLinkID      string       `json:"order_link_id"`
 	Side             Side         `json:"side"`
 	Symbol           SymbolFuture `json:"symbol"`
-	OrderPrice       float64      `json:"order_price"`
-	OrderQty         float64      `json:"order_qty"`
-	OrderType        OrderType    `json:"order_type"`
-	FeeRate          float64      `json:"fee_rate"`
-	ExecPrice        float64      `json:"exec_price"`
+	LastLiquidityInd string       `json:"last_liquidity_ind"`
 	ExecType         ExecType     `json:"exec_type"`
+	OrderType        OrderType    `json:"order_type"`
+	ExecPrice        float64      `json:"exec_price"`
+	FeeRate          float64      `json:"fee_rate"`
+	OrderQty         float64      `json:"order_qty"`
 	ExecQty          float64      `json:"exec_qty"`
 	ExecFee          float64      `json:"exec_fee"`
 	ExecValue        float64      `json:"exec_value"`
 	LeavesQty        float64      `json:"leaves_qty"`
 	ClosedSize       float64      `json:"closed_size"`
-	LastLiquidityInd string       `json:"last_liquidity_ind"`
+	OrderPrice       float64      `json:"order_price"`
 	TradeTimeMs      float64      `json:"trade_time_ms"`
 }
 
 // LinearExecutionListParam :
 type LinearExecutionListParam struct {
-	Symbol SymbolFuture `url:"symbol"`
-
-	StartTime *int      `url:"start_time,omitempty"`
-	EndTime   *int      `url:"end_time,omitempty"`
-	ExecType  *ExecType `url:"exec_type,omitempty"`
-	Page      *int      `url:"page,omitempty"`
-	Limit     *int      `url:"limit,omitempty"`
+	StartTime *int         `url:"start_time,omitempty"`
+	EndTime   *int         `url:"end_time,omitempty"`
+	ExecType  *ExecType    `url:"exec_type,omitempty"`
+	Page      *int         `url:"page,omitempty"`
+	Limit     *int         `url:"limit,omitempty"`
+	Symbol    SymbolFuture `url:"symbol"`
 }
 
 // LinearExecutionList :
@@ -476,8 +470,8 @@ type LinearCancelAllParam struct {
 
 // LinearCancelAllResponse : Response from cancel all endpoint
 type LinearCancelAllResponse struct {
-	CommonResponse `json:",inline"`
 	Result         LinearCancelAllResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 type LinearCancelAllResult []string
@@ -500,8 +494,8 @@ func (s *FutureUSDTPerpetualService) LinearCancelAllOrder(ctx context.Context, p
 
 // ReplaceLinearOrderResponse :
 type ReplaceLinearOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         ReplaceLinearOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ReplaceLinearOrderResult :
@@ -511,8 +505,6 @@ type ReplaceLinearOrderResult struct {
 
 // ReplaceLinearOrderParam :
 type ReplaceLinearOrderParam struct {
-	Symbol SymbolFuture `json:"symbol"`
-
 	OrderID     *string          `json:"order_id,omitempty"`
 	OrderLinkID *string          `json:"order_link_id,omitempty"`
 	NewQuantity *float64         `json:"p_r_qty,omitempty"`
@@ -521,6 +513,7 @@ type ReplaceLinearOrderParam struct {
 	StopLoss    *float64         `json:"stop_loss,omitempty"`
 	TpTriggerBy *TriggerByFuture `json:"tp_trigger_by,omitempty"`
 	SlTriggerBy *TriggerByFuture `json:"sl_trigger_by,omitempty"`
+	Symbol      SymbolFuture     `json:"symbol"`
 }
 
 // ReplaceLinearOrder :
@@ -541,42 +534,41 @@ func (s *FutureUSDTPerpetualService) ReplaceLinearOrder(ctx context.Context, par
 
 // QueryLinearOrderResponse :
 type QueryLinearOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []QueryLinearOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // QueryLinearOrderResult :
 type QueryLinearOrderResult struct {
-	OrderID        string          `json:"order_id"`
-	UserID         int             `json:"user_id"`
+	OrderLinkID    string          `json:"order_link_id"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	OrderID        string          `json:"order_id"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	LastExecPrice  float64         `json:"last_exec_price"`
-	CumExecQty     float64         `json:"cum_exec_qty"`
-	CumExecValue   float64         `json:"cum_exec_value"`
-	CumExecFee     float64         `json:"cum_exec_fee"`
-	ReduceOnly     bool            `json:"reduce_only"`
-	CloseOnTrigger bool            `json:"close_on_trigger"`
-	OrderLinkID    string          `json:"order_link_id"`
-	CreatedTime    string          `json:"created_time"`
 	UpdatedTime    string          `json:"updated_time"`
+	CreatedTime    string          `json:"created_time"`
+	Price          float64         `json:"price"`
+	CumExecFee     float64         `json:"cum_exec_fee"`
+	CumExecValue   float64         `json:"cum_exec_value"`
+	CumExecQty     float64         `json:"cum_exec_qty"`
+	LastExecPrice  float64         `json:"last_exec_price"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	Qty            float64         `json:"qty"`
+	UserID         int             `json:"user_id"`
+	ReduceOnly     bool            `json:"reduce_only"`
+	CloseOnTrigger bool            `json:"close_on_trigger"`
 }
 
 // QueryLinearOrderParam :
 type QueryLinearOrderParam struct {
-	Symbol SymbolFuture `url:"symbol"`
-
-	OrderID     *string `url:"order_id,omitempty"`
-	OrderLinkID *string `url:"order_link_id,omitempty"`
+	OrderID     *string      `url:"order_id,omitempty"`
+	OrderLinkID *string      `url:"order_link_id,omitempty"`
+	Symbol      SymbolFuture `url:"symbol"`
 }
 
 // QueryLinearOrder :
@@ -603,50 +595,49 @@ type CreateLinearStopOrderResponse struct {
 
 // CreateLinearStopOrderResult :
 type CreateLinearStopOrderResult struct {
-	StopOrderID    string          `json:"stop_order_id"`
-	UserID         int             `json:"user_id"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	OrderLinkID    string          `json:"order_link_id"`
+	StopOrderID    string          `json:"stop_order_id"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	TriggerPrice   float64         `json:"trigger_price"`
-	OrderLinkID    string          `json:"order_link_id"`
-	CreatedTime    string          `json:"created_time"`
 	UpdatedTime    string          `json:"updated_time"`
-	BasePrice      string          `json:"base_price"`
 	TriggerBy      TriggerByFuture `json:"trigger_by"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	CreatedTime    string          `json:"created_time"`
+	BasePrice      string          `json:"base_price"`
+	TriggerPrice   float64         `json:"trigger_price"`
+	UserID         int             `json:"user_id"`
+	Qty            float64         `json:"qty"`
+	Price          float64         `json:"price"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
+	PositionIdx    int             `json:"position_idx"`
 	ReduceOnly     bool            `json:"reduce_only"`
 	CloseOnTrigger bool            `json:"close_on_trigger"`
-	PositionIdx    int             `json:"position_idx"`
 }
 
 // CreateLinearStopOrderParam :
 type CreateLinearStopOrderParam struct {
-	Side           Side            `json:"side"`
-	Symbol         SymbolFuture    `json:"symbol"`
-	OrderType      OrderType       `json:"order_type"`
-	Qty            float64         `json:"qty"`
-	BasePrice      float64         `json:"base_price"`
-	StopPx         float64         `json:"stop_px"`
-	TimeInForce    TimeInForce     `json:"time_in_force"`
-	TriggerBy      TriggerByFuture `json:"trigger_by"`
-	ReduceOnly     bool            `json:"reduce_only"`
-	CloseOnTrigger bool            `json:"close_on_trigger"`
-
-	Price       *float64         `json:"price,omitempty"`
-	OrderLinkID *string          `json:"order_link_id,omitempty"`
-	TakeProfit  *float64         `json:"take_profit,omitempty"`
-	StopLoss    *float64         `json:"stop_loss,omitempty"`
-	TpTriggerBy *TriggerByFuture `json:"tp_trigger_by,omitempty"`
-	SlTriggerBy *TriggerByFuture `json:"sl_trigger_by,omitempty"`
-	PositionIdx *int             `json:"position_idx,omitempty"`
+	TakeProfit     *float64         `json:"take_profit,omitempty"`
+	PositionIdx    *int             `json:"position_idx,omitempty"`
+	SlTriggerBy    *TriggerByFuture `json:"sl_trigger_by,omitempty"`
+	TpTriggerBy    *TriggerByFuture `json:"tp_trigger_by,omitempty"`
+	StopLoss       *float64         `json:"stop_loss,omitempty"`
+	Price          *float64         `json:"price,omitempty"`
+	OrderLinkID    *string          `json:"order_link_id,omitempty"`
+	Symbol         SymbolFuture     `json:"symbol"`
+	OrderType      OrderType        `json:"order_type"`
+	Side           Side             `json:"side"`
+	TimeInForce    TimeInForce      `json:"time_in_force"`
+	TriggerBy      TriggerByFuture  `json:"trigger_by"`
+	BasePrice      float64          `json:"base_price"`
+	StopPx         float64          `json:"stop_px"`
+	Qty            float64          `json:"qty"`
+	CloseOnTrigger bool             `json:"close_on_trigger"`
+	ReduceOnly     bool             `json:"reduce_only"`
 }
 
 // CreateLinearStopOrder :
@@ -667,52 +658,51 @@ func (s *FutureUSDTPerpetualService) CreateLinearStopOrder(ctx context.Context, 
 
 // ListLinearStopOrderResponse :
 type ListLinearStopOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         ListLinearStopOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // ListLinearStopOrderResult :
 type ListLinearStopOrderResult struct {
+	Content     []ListLinearStopOrderResultContent `json:"data"`
 	CurrentPage int                                `json:"current_page"`
 	LastPage    int                                `json:"last_page"`
-	Content     []ListLinearStopOrderResultContent `json:"data"`
 }
 
 // ListLinearStopOrderResultContent :
 type ListLinearStopOrderResultContent struct {
-	StopOrderID    string          `json:"stop_order_id"`
-	UserID         int             `json:"user_id"`
+	TriggerBy      TriggerByFuture `json:"trigger_by"`
+	BasePrice      string          `json:"base_price"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	TriggerPrice   float64         `json:"trigger_price"`
-	OrderLinkID    string          `json:"order_link_id"`
-	CreatedTime    string          `json:"created_time"`
 	UpdatedTime    string          `json:"updated_time"`
+	StopOrderID    string          `json:"stop_order_id"`
+	CreatedTime    string          `json:"created_time"`
+	OrderLinkID    string          `json:"order_link_id"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
-	TriggerBy      TriggerByFuture `json:"trigger_by"`
-	BasePrice      string          `json:"base_price"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	UserID         int             `json:"user_id"`
+	TriggerPrice   float64         `json:"trigger_price"`
+	Qty            float64         `json:"qty"`
+	Price          float64         `json:"price"`
 	ReduceOnly     bool            `json:"reduce_only"`
 	CloseOnTrigger bool            `json:"close_on_trigger"`
 }
 
 // ListLinearStopOrderParam :
 type ListLinearStopOrderParam struct {
-	Symbol SymbolFuture `url:"symbol"`
-
 	StopOrderID     *string      `url:"stop_order_id,omitempty"`
 	OrderLinkID     *string      `url:"order_link_id,omitempty"`
 	StopOrderStatus *OrderStatus `url:"stop_order_status,omitempty"`
 	Order           *Order       `url:"order,omitempty"`
 	Page            *int         `url:"page,omitempty"`
 	Limit           *int         `url:"limit,omitempty"`
+	Symbol          SymbolFuture `url:"symbol"`
 }
 
 // ListLinearStopOrder :
@@ -733,8 +723,8 @@ func (s *FutureUSDTPerpetualService) ListLinearStopOrder(ctx context.Context, pa
 
 // CancelLinearStopOrderResponse :
 type CancelLinearStopOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         CancelLinearStopOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // CancelLinearStopOrderResult :
@@ -744,10 +734,9 @@ type CancelLinearStopOrderResult struct {
 
 // CancelLinearStopOrderParam :
 type CancelLinearStopOrderParam struct {
-	Symbol SymbolFuture `json:"symbol"`
-
-	StopOrderID *string `json:"stop_order_id,omitempty"`
-	OrderLinkID *string `json:"order_link_id,omitempty"`
+	StopOrderID *string      `json:"stop_order_id,omitempty"`
+	OrderLinkID *string      `json:"order_link_id,omitempty"`
+	Symbol      SymbolFuture `json:"symbol"`
 }
 
 // CancelLinearStopOrder :
@@ -772,8 +761,8 @@ func (s *FutureUSDTPerpetualService) CancelLinearStopOrder(ctx context.Context, 
 
 // CancelAllLinearStopOrderResponse :
 type CancelAllLinearStopOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         CancelAllLinearStopOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // CancelAllLinearStopOrderResult :
@@ -802,41 +791,40 @@ func (s *FutureUSDTPerpetualService) CancelAllLinearStopOrder(ctx context.Contex
 
 // QueryLinearStopOrderResponse :
 type QueryLinearStopOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []QueryLinearStopOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // QueryLinearStopOrderResult :
 type QueryLinearStopOrderResult struct {
-	StopOrderID    string          `json:"stop_order_id"`
-	UserID         int             `json:"user_id"`
+	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
+	TriggerBy      TriggerByFuture `json:"trigger_by"`
 	Symbol         SymbolFuture    `json:"symbol"`
 	Side           Side            `json:"side"`
 	OrderType      OrderType       `json:"order_type"`
-	Price          float64         `json:"price"`
-	Qty            float64         `json:"qty"`
+	StopOrderID    string          `json:"stop_order_id"`
+	UpdatedTime    string          `json:"updated_time"`
 	TimeInForce    TimeInForce     `json:"time_in_force"`
 	OrderStatus    OrderStatus     `json:"order_status"`
-	TriggerPrice   float64         `json:"trigger_price"`
+	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
 	BasePrice      string          `json:"base_price"`
 	OrderLinkID    string          `json:"order_link_id"`
 	CreatedTime    string          `json:"created_time"`
-	UpdatedTime    string          `json:"updated_time"`
+	Price          float64         `json:"price"`
 	TakeProfit     float64         `json:"take_profit"`
 	StopLoss       float64         `json:"stop_loss"`
-	TpTriggerBy    TriggerByFuture `json:"tp_trigger_by"`
-	SlTriggerBy    TriggerByFuture `json:"sl_trigger_by"`
-	TriggerBy      TriggerByFuture `json:"trigger_by"`
+	TriggerPrice   float64         `json:"trigger_price"`
+	Qty            float64         `json:"qty"`
+	UserID         int             `json:"user_id"`
 	ReduceOnly     bool            `json:"reduce_only"`
 	CloseOnTrigger bool            `json:"close_on_trigger"`
 }
 
 // QueryLinearStopOrderParam :
 type QueryLinearStopOrderParam struct {
-	Symbol SymbolFuture `url:"symbol"`
-
-	StopOrderID *string `url:"stop_order_id,omitempty"`
-	OrderLinkID *string `url:"order_link_id,omitempty"`
+	StopOrderID *string      `url:"stop_order_id,omitempty"`
+	OrderLinkID *string      `url:"order_link_id,omitempty"`
+	Symbol      SymbolFuture `url:"symbol"`
 }
 
 // QueryLinearStopOrder :

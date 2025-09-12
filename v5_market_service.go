@@ -34,19 +34,18 @@ type V5MarketService struct {
 
 // V5GetKlineParam :
 type V5GetKlineParam struct {
+	Start    *int64     `url:"start,omitempty"`
+	End      *int64     `url:"end,omitempty"`
+	Limit    *int       `url:"limit,omitempty"`
 	Category CategoryV5 `url:"category"`
 	Symbol   SymbolV5   `url:"symbol"`
 	Interval Interval   `url:"interval"`
-	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
-	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
-
-	Limit *int `url:"limit,omitempty"` // Limit for data size per page. [1, 200]. Default: 200
 }
 
 // V5GetKlineResponse :
 type V5GetKlineResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetKlineResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetKlineResult :
@@ -111,18 +110,18 @@ func (s *V5MarketService) GetKline(ctx context.Context, param V5GetKlineParam) (
 
 // V5GetMarkPriceKlineParam :
 type V5GetMarkPriceKlineParam struct {
+	Start    *int64     `url:"start,omitempty"`
+	End      *int64     `url:"end,omitempty"`
+	Limit    *int       `url:"limit,omitempty"`
 	Category CategoryV5 `url:"category"`
 	Symbol   SymbolV5   `url:"symbol"`
 	Interval Interval   `url:"interval"`
-	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
-	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
-	Limit    *int       `url:"limit,omitempty"` // Limit for data size per page. [1, 200]. Default: 200
 }
 
 // V5GetMarkPriceKlineResponse :
 type V5GetMarkPriceKlineResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetMarkPriceKlineResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetMarkPriceKlineResult :
@@ -187,18 +186,18 @@ func (s *V5MarketService) GetMarkPriceKline(ctx context.Context, param V5GetMark
 
 // V5GetIndexPriceKlineParam :
 type V5GetIndexPriceKlineParam struct {
+	Start    *int64     `url:"start,omitempty"`
+	End      *int64     `url:"end,omitempty"`
+	Limit    *int       `url:"limit,omitempty"`
 	Category CategoryV5 `url:"category"`
 	Symbol   SymbolV5   `url:"symbol"`
 	Interval Interval   `url:"interval"`
-	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
-	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
-	Limit    *int       `url:"limit,omitempty"` // Limit for data size per page. [1, 200]. Default: 200
 }
 
 // V5GetIndexPriceKlineResponse :
 type V5GetIndexPriceKlineResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetIndexPriceKlineResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetIndexPriceKlineResult :
@@ -263,18 +262,18 @@ func (s *V5MarketService) GetIndexPriceKline(ctx context.Context, param V5GetInd
 
 // V5GetPremiumIndexPriceKlineParam :
 type V5GetPremiumIndexPriceKlineParam struct {
+	Start    *int64     `url:"start,omitempty"`
+	End      *int64     `url:"end,omitempty"`
+	Limit    *int       `url:"limit,omitempty"`
 	Category CategoryV5 `url:"category"`
 	Symbol   SymbolV5   `url:"symbol"`
 	Interval Interval   `url:"interval"`
-	Start    *int64     `url:"start,omitempty"` // timestamp point for result, in milliseconds
-	End      *int64     `url:"end,omitempty"`   // timestamp point for result, in milliseconds
-	Limit    *int       `url:"limit,omitempty"` // Limit for data size per page. [1, 200]. Default: 200
 }
 
 // V5GetPremiumIndexPriceKlineResponse :
 type V5GetPremiumIndexPriceKlineResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetPremiumIndexPriceKlineResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetPremiumIndexPriceKlineResult :
@@ -342,18 +341,17 @@ func (s *V5MarketService) GetPremiumIndexPriceKline(ctx context.Context, param V
 // Spot does not support pagination, so limit, cursor are invalid.
 // When query by baseCoin, regardless of category=linear or inverse, the result will have Linear contract and Inverse contract symbols.
 type V5GetInstrumentsInfoParam struct {
+	Symbol   *SymbolV5  `url:"symbol,omitempty"`
+	BaseCoin *Coin      `url:"baseCoin,omitempty"`
+	Limit    *int       `url:"limit,omitempty"`
+	Cursor   *string    `url:"cursor,omitempty"`
 	Category CategoryV5 `url:"category"`
-
-	Symbol   *SymbolV5 `url:"symbol,omitempty"`
-	BaseCoin *Coin     `url:"baseCoin,omitempty"` // Base coin. linear,inverse,option only
-	Limit    *int      `url:"limit,omitempty"`    // Limit for data size per page. [1, 1000]. Default: 500
-	Cursor   *string   `url:"cursor,omitempty"`
 }
 
 // V5GetInstrumentsInfoResponse :
 type V5GetInstrumentsInfoResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetInstrumentsInfoResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetInstrumentsInfoResult :
@@ -517,13 +515,9 @@ func (s *V5MarketService) GetInstrumentsInfo(ctx context.Context, param V5GetIns
 
 // V5GetOrderbookParam :
 type V5GetOrderbookParam struct {
+	Limit    *int       `url:"limit,omitempty"`
 	Category CategoryV5 `url:"category"`
 	Symbol   SymbolV5   `url:"symbol"`
-
-	// spot: [1, 50]. Default: 1.
-	// linear&inverse: [1, 200]. Default: 25.
-	// option: [1, 25]. Default: 1.
-	Limit *int `url:"limit,omitempty"`
 }
 
 // V5GetOrderbookResponse :
@@ -589,11 +583,10 @@ func (s *V5MarketService) GetOrderbook(ctx context.Context, param V5GetOrderbook
 
 // V5GetTickersParam :
 type V5GetTickersParam struct {
+	Symbol   *SymbolV5  `url:"symbol,omitempty"`
+	BaseCoin *Coin      `url:"baseCoin,omitempty"`
+	ExpDate  *string    `url:"expDate,omitempty"`
 	Category CategoryV5 `url:"category"`
-
-	Symbol   *SymbolV5 `url:"symbol,omitempty"`
-	BaseCoin *Coin     `url:"baseCoin,omitempty"` // Base coin. For option only
-	ExpDate  *string   `url:"expDate,omitempty"`  // Expiry date. e.g., 25DEC22. For option only
 }
 
 func (p V5GetTickersParam) validate() error {
@@ -611,8 +604,8 @@ func (p V5GetTickersParam) validate() error {
 
 // V5GetTickersResponse :
 type V5GetTickersResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetTickersResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetTickersResult :
@@ -760,12 +753,11 @@ func (s *V5MarketService) GetTickers(ctx context.Context, param V5GetTickersPara
 
 // V5GetFundingRateHistoryParam :
 type V5GetFundingRateHistoryParam struct {
-	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
-
-	StartTime *int64 `url:"startTime,omitempty"` // The start timestamp (ms)
-	EndTime   *int64 `url:"endTime,omitempty"`   // The start timestamp (ms)
-	Limit     *int   `url:"limit,omitempty"`     // Limit for data size per page. [1, 200]. Default: 200
+	StartTime *int64     `url:"startTime,omitempty"`
+	EndTime   *int64     `url:"endTime,omitempty"`
+	Limit     *int       `url:"limit,omitempty"`
+	Category  CategoryV5 `url:"category"`
+	Symbol    SymbolV5   `url:"symbol"`
 }
 
 func (p V5GetFundingRateHistoryParam) validate() error {
@@ -777,8 +769,8 @@ func (p V5GetFundingRateHistoryParam) validate() error {
 
 // V5GetFundingRateHistoryResponse :
 type V5GetFundingRateHistoryResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetFundingRateHistoryResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetFundingRateHistoryResult :
@@ -815,16 +807,11 @@ func (s *V5MarketService) GetFundingRateHistory(ctx context.Context, param V5Get
 
 // V5GetPublicTradingHistoryParam :
 type V5GetPublicTradingHistoryParam struct {
-	Category CategoryV5 `url:"category"`
-	Symbol   SymbolV5   `url:"symbol"`
-
-	BaseCoin   *Coin        `url:"baseCoin,omitempty"` // For option only. If not passed, return BTC data by default
+	BaseCoin   *Coin        `url:"baseCoin,omitempty"`
 	OptionType *OptionsType `url:"optionType,omitempty"`
-
-	// Limit for data size per page.
-	// - spot: [1,60], default: 60
-	// - others: [1,1000], default: 500
-	Limit *int `url:"limit,omitempty"`
+	Limit      *int         `url:"limit,omitempty"`
+	Category   CategoryV5   `url:"category"`
+	Symbol     SymbolV5     `url:"symbol"`
 }
 
 func (p V5GetPublicTradingHistoryParam) validate() error {
@@ -836,8 +823,8 @@ func (p V5GetPublicTradingHistoryParam) validate() error {
 
 // V5GetPublicTradingHistoryResponse :
 type V5GetPublicTradingHistoryResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetPublicTradingHistoryResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetPublicTradingHistoryResult :
@@ -878,14 +865,13 @@ func (s *V5MarketService) GetPublicTradingHistory(ctx context.Context, param V5G
 
 // V5GetOpenInterestParam :
 type V5GetOpenInterestParam struct {
+	StartTime    *int64     `url:"startTime,omitempty"`
+	EndTime      *int64     `url:"endTime,omitempty"`
+	Limit        *int       `url:"limit,omitempty"`
+	Cursor       *string    `url:"cursor,omitempty"`
 	Category     CategoryV5 `url:"category"`
 	Symbol       SymbolV5   `url:"symbol"`
 	IntervalTime Period     `url:"intervalTime"`
-
-	StartTime *int64  `url:"startTime,omitempty"` // The start timestamp (ms)
-	EndTime   *int64  `url:"endTime,omitempty"`   // The start timestamp (ms)
-	Limit     *int    `url:"limit,omitempty"`     // Limit for data size per page. [1, 200]. Default: 50
-	Cursor    *string `url:"cursor,omitempty"`
 }
 
 func (p V5GetOpenInterestParam) validate() error {
@@ -897,16 +883,16 @@ func (p V5GetOpenInterestParam) validate() error {
 
 // V5GetOpenInterestResponse :
 type V5GetOpenInterestResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetOpenInterestResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetOpenInterestResult :
 type V5GetOpenInterestResult struct {
 	Category       CategoryV5              `json:"category"`
 	Symbol         SymbolV5                `json:"symbol"`
-	List           []V5GetOpenInterestItem `json:"list"`
 	NextPageCursor string                  `json:"nextPageCursor"`
+	List           []V5GetOpenInterestItem `json:"list"`
 }
 
 type V5GetOpenInterestItem struct {
@@ -936,12 +922,11 @@ func (s *V5MarketService) GetOpenInterest(ctx context.Context, param V5GetOpenIn
 
 // V5GetHistoricalVolatilityParam :
 type V5GetHistoricalVolatilityParam struct {
-	Category CategoryV5 `url:"category"` // option only
-
-	BaseCoin  *Coin  `url:"baseCoin,omitempty"`
-	Period    *int   `url:"period,omitempty"`
-	StartTime *int64 `url:"startTime,omitempty"` // The start timestamp (ms)
-	EndTime   *int64 `url:"endTime,omitempty"`   // The start timestamp (ms)
+	BaseCoin  *Coin      `url:"baseCoin,omitempty"`
+	Period    *int       `url:"period,omitempty"`
+	StartTime *int64     `url:"startTime,omitempty"`
+	EndTime   *int64     `url:"endTime,omitempty"`
+	Category  CategoryV5 `url:"category"`
 }
 
 func (p V5GetHistoricalVolatilityParam) validate() error {
@@ -953,16 +938,16 @@ func (p V5GetHistoricalVolatilityParam) validate() error {
 
 // V5GetHistoricalVolatilityResponse :
 type V5GetHistoricalVolatilityResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetHistoricalVolatilityResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // UnmarshalJSON : Because the response structure is different from others
 func (r *V5GetHistoricalVolatilityResponse) UnmarshalJSON(data []byte) error {
 	var tmp struct {
-		CommonV5Response `json:",inline"`
 		Category         CategoryV5                          `json:"category"`
 		List             []V5GetHistoricalVolatilityListItem `json:"result"`
+		CommonV5Response `json:",inline"`
 	}
 	if err := json.Unmarshal(data, &tmp); err != nil {
 		return err
@@ -986,9 +971,9 @@ type V5GetHistoricalVolatilityResult struct {
 
 // V5GetHistoricalVolatilityListItem :
 type V5GetHistoricalVolatilityListItem struct {
-	Period int    `json:"period"`
 	Value  string `json:"value"`
 	Time   string `json:"time"`
+	Period int    `json:"period"`
 }
 
 // GetHistoricalVolatility :
@@ -1018,8 +1003,8 @@ type V5GetInsuranceParam struct {
 
 // V5GetInsuranceResponse :
 type V5GetInsuranceResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetInsuranceResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetInsuranceResult :
@@ -1052,9 +1037,8 @@ func (s *V5MarketService) GetInsurance(ctx context.Context, param V5GetInsurance
 
 // V5GetRiskLimitParam :
 type V5GetRiskLimitParam struct {
+	Symbol   *SymbolV5  `url:"symbol,omitempty"`
 	Category CategoryV5 `url:"category"`
-
-	Symbol *SymbolV5 `url:"symbol,omitempty"`
 }
 
 func (p V5GetRiskLimitParam) validate() error {
@@ -1066,8 +1050,8 @@ func (p V5GetRiskLimitParam) validate() error {
 
 // V5GetRiskLimitResponse :
 type V5GetRiskLimitResponse struct {
-	CommonV5Response `json:",inline"`
 	Result           V5GetRiskLimitResult `json:"result"`
+	CommonV5Response `json:",inline"`
 }
 
 // V5GetRiskLimitResult :
@@ -1077,13 +1061,13 @@ type V5GetRiskLimitResult struct {
 }
 
 type V5GetRiskLimitItem struct {
-	ID                int64        `json:"id"`
 	Symbol            SymbolV5     `json:"symbol"`
 	RiskLimitValue    string       `json:"riskLimitValue"`
 	MaintenanceMargin string       `json:"maintenanceMargin"`
 	InitialMargin     string       `json:"initialMargin"`
-	IsLowestRisk      IsLowestRisk `json:"isLowestRisk"`
 	MaxLeverage       string       `json:"maxLeverage"`
+	ID                int64        `json:"id"`
+	IsLowestRisk      IsLowestRisk `json:"isLowestRisk"`
 }
 
 // GetRiskLimit :
@@ -1108,8 +1092,8 @@ func (s *V5MarketService) GetRiskLimit(ctx context.Context, param V5GetRiskLimit
 
 // V5GetTimeResponse :
 type V5GetTimeResponse struct {
-	CommonResponse `json:",inline"`
 	Result         V5GetTimeResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 type V5GetTimeResult struct {

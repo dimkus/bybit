@@ -75,11 +75,11 @@ func checkV5ResponseBody(body []byte) error {
 
 // CommonResponse :
 type CommonResponse struct {
-	RetCode          int    `json:"ret_code"`
 	RetMsg           string `json:"ret_msg"`
 	ExtCode          string `json:"ext_code"`
 	ExtInfo          string `json:"ext_info"`
 	TimeNow          string `json:"time_now"`
+	RetCode          int    `json:"ret_code"`
 	RateLimitStatus  int    `json:"rate_limit_status"`
 	RateLimitResetMs int    `json:"rate_limit_reset_ms"`
 	RateLimit        int    `json:"rate_limit"`
@@ -87,24 +87,24 @@ type CommonResponse struct {
 
 // CommonV3Response :
 type CommonV3Response struct {
-	RetCode    int         `json:"retCode"`
-	RetMsg     string      `json:"retMsg"`
 	RetExtInfo interface{} `json:"retExtInfo"`
+	RetMsg     string      `json:"retMsg"`
+	RetCode    int         `json:"retCode"`
 	Time       int         `json:"time"`
 }
 
 // CommonV5Response :
 type CommonV5Response struct {
-	RetCode    int         `json:"retCode"`
-	RetMsg     string      `json:"retMsg"`
 	RetExtInfo interface{} `json:"retExtInfo"`
+	RetMsg     string      `json:"retMsg"`
+	RetCode    int         `json:"retCode"`
 	Time       int         `json:"time"`
 }
 
 // ErrorResponse :
 type ErrorResponse struct {
-	RetCode int    `json:"ret_code"`
 	RetMsg  string `json:"ret_msg"`
+	RetCode int    `json:"ret_code"`
 }
 
 // Error :

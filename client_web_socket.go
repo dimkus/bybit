@@ -23,14 +23,12 @@ const (
 
 // WebSocketClient :
 type WebSocketClient struct {
-	debug  bool
-	logger *log.Logger
-
-	baseURL string
-	key     string
-	secret  string
-
+	logger                   *log.Logger
+	baseURL                  string
+	key                      string
+	secret                   string
 	syncTimeDeltaNanoSeconds int64
+	debug                    bool
 }
 
 func (c *WebSocketClient) debugf(format string, v ...interface{}) {

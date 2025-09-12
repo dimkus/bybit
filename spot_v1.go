@@ -43,8 +43,8 @@ type SpotV1Service struct {
 
 // SpotSymbolsResponse :
 type SpotSymbolsResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []SpotSymbolsResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotSymbolsResult :
@@ -76,22 +76,21 @@ func (s *SpotV1Service) SpotSymbols(ctx context.Context) (*SpotSymbolsResponse, 
 
 // SpotQuoteDepthParam :
 type SpotQuoteDepthParam struct {
+	Limit  *int       `url:"limit,omitempty"`
 	Symbol SymbolSpot `url:"symbol"`
-
-	Limit *int `url:"limit,omitempty"`
 }
 
 // SpotQuoteDepthResponse :
 type SpotQuoteDepthResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotQuoteDepthResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteDepthResult :
 type SpotQuoteDepthResult struct {
-	Time int                    `json:"time"`
 	Bids SpotQuoteDepthBidsAsks `json:"bids"`
 	Asks SpotQuoteDepthBidsAsks `json:"asks"`
+	Time int                    `json:"time"`
 }
 
 // SpotQuoteDepthBidsAsks :
@@ -142,23 +141,22 @@ func (s *SpotV1Service) SpotQuoteDepth(ctx context.Context, param SpotQuoteDepth
 
 // SpotQuoteDepthMergedParam :
 type SpotQuoteDepthMergedParam struct {
+	Scale  *int       `url:"scale,omitempty"`
+	Limit  *int       `url:"limit,omitempty"`
 	Symbol SymbolSpot `url:"symbol"`
-
-	Scale *int `url:"scale,omitempty"`
-	Limit *int `url:"limit,omitempty"`
 }
 
 // SpotQuoteDepthMergedResponse :
 type SpotQuoteDepthMergedResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotQuoteDepthMergedResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteDepthMergedResult :
 type SpotQuoteDepthMergedResult struct {
-	Time int                    `json:"time"`
 	Bids SpotQuoteDepthBidsAsks `json:"bids"`
 	Asks SpotQuoteDepthBidsAsks `json:"asks"`
+	Time int                    `json:"time"`
 }
 
 // SpotQuoteDepthMerged :
@@ -179,22 +177,21 @@ func (s *SpotV1Service) SpotQuoteDepthMerged(ctx context.Context, param SpotQuot
 
 // SpotQuoteTradesParam :
 type SpotQuoteTradesParam struct {
+	Limit  *int       `url:"limit,omitempty"`
 	Symbol SymbolSpot `url:"symbol"`
-
-	Limit *int `url:"limit,omitempty"`
 }
 
 // SpotQuoteTradesResponse :
 type SpotQuoteTradesResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []SpotQuoteTradesResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteTradesResult :
 type SpotQuoteTradesResult struct {
 	Price        string `json:"price"`
-	Time         int    `json:"time"`
 	Qty          string `json:"qty"`
+	Time         int    `json:"time"`
 	IsBuyerMaker bool   `json:"isBuyerMaker"`
 }
 
@@ -216,18 +213,17 @@ func (s *SpotV1Service) SpotQuoteTrades(ctx context.Context, param SpotQuoteTrad
 
 // SpotQuoteKlineParam :
 type SpotQuoteKlineParam struct {
-	Symbol   SymbolSpot `url:"symbol"`
-	Interval Interval   `url:"interval"`
-
-	Limit     *int `url:"limit,omitempty"`
-	StartTime *int `url:"startTime,omitempty"`
-	EndTime   *int `url:"endTime,omitempty"`
+	Limit     *int       `url:"limit,omitempty"`
+	StartTime *int       `url:"startTime,omitempty"`
+	EndTime   *int       `url:"endTime,omitempty"`
+	Symbol    SymbolSpot `url:"symbol"`
+	Interval  Interval   `url:"interval"`
 }
 
 // SpotQuoteKlineResponse :
 type SpotQuoteKlineResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []SpotQuoteKlineResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteKlineResult :
@@ -262,14 +258,14 @@ func (r *SpotQuoteKlineResult) UnmarshalJSON(data []byte) error {
 
 // SpotQuoteKline :
 type SpotQuoteKline struct {
-	StartTime        int
 	Open             string
 	High             string
 	Low              string
 	Close            string
 	Volume           string
-	EndTime          int
 	QuoteAssetVolume string
+	StartTime        int
+	EndTime          int
 	Trades           int
 	TakerBaseVolume  float64
 	TakerQuoteVolume float64
@@ -298,13 +294,12 @@ type SpotQuoteTicker24hrParam struct {
 
 // SpotQuoteTicker24hrResponse :
 type SpotQuoteTicker24hrResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotQuoteTicker24hrResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteTicker24hrResult :
 type SpotQuoteTicker24hrResult struct {
-	Time         int    `json:"time"`
 	Symbol       string `json:"symbol"`
 	BestBidPrice string `json:"bestBidPrice"`
 	BestAskPrice string `json:"bestAskPrice"`
@@ -314,6 +309,7 @@ type SpotQuoteTicker24hrResult struct {
 	LowPrice     string `json:"lowPrice"`
 	Volume       string `json:"volume"`
 	QuoteVolume  string `json:"quoteVolume"`
+	Time         int    `json:"time"`
 }
 
 // SpotQuoteTicker24hr :
@@ -339,8 +335,8 @@ type SpotQuoteTickerPriceParam struct {
 
 // SpotQuoteTickerPriceResponse :
 type SpotQuoteTickerPriceResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotQuoteTickerPriceResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteTickerPriceResult :
@@ -372,8 +368,8 @@ type SpotQuoteTickerBookTickerParam struct {
 
 // SpotQuoteTickerBookTickerResponse :
 type SpotQuoteTickerBookTickerResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotQuoteTickerBookTickerResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotQuoteTickerBookTickerResult :
@@ -404,20 +400,19 @@ func (s *SpotV1Service) SpotQuoteTickerBookTicker(ctx context.Context, param Spo
 
 // SpotPostOrderParam :
 type SpotPostOrderParam struct {
-	Symbol SymbolSpot    `url:"symbol"`
-	Qty    float64       `url:"qty"`
-	Side   Side          `url:"side"`
-	Type   OrderTypeSpot `url:"type"`
-
 	TimeInForce *TimeInForceSpot `url:"timeInForce,omitempty"`
 	Price       *float64         `url:"price,omitempty"`
 	OrderLinkID *string          `url:"orderLinkId,omitempty"`
+	Symbol      SymbolSpot       `url:"symbol"`
+	Side        Side             `url:"side"`
+	Type        OrderTypeSpot    `url:"type"`
+	Qty         float64          `url:"qty"`
 }
 
 // SpotPostOrderResponse :
 type SpotPostOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotPostOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotPostOrderResult :
@@ -461,8 +456,8 @@ type SpotGetOrderParam struct {
 
 // SpotGetOrderResponse :
 type SpotGetOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotGetOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotGetOrderResult :
@@ -513,8 +508,8 @@ type SpotDeleteOrderParam struct {
 
 // SpotDeleteOrderResponse :
 type SpotDeleteOrderResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotDeleteOrderResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotDeleteOrderResult :
@@ -550,10 +545,9 @@ func (s *SpotV1Service) SpotDeleteOrder(ctx context.Context, param SpotDeleteOrd
 }
 
 type SpotDeleteOrderFastParam struct {
-	Symbol SymbolSpot `url:"symbolId"`
-
-	OrderID     *string `url:"orderId,omitempty"`
-	OrderLinkID *string `url:"orderLinkId,omitempty"`
+	OrderID     *string    `url:"orderId,omitempty"`
+	OrderLinkID *string    `url:"orderLinkId,omitempty"`
+	Symbol      SymbolSpot `url:"symbolId"`
 }
 
 type SpotDeleteOrderFastResponse struct {
@@ -644,8 +638,8 @@ func (s *SpotV1Service) SpotOrderBatchFastCancel(ctx context.Context, param Spot
 }
 
 type SpotOrderBatchCancelByIDsResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []SpotOrderBatchCancelByIDsResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 type SpotOrderBatchCancelByIDsResult struct {
@@ -679,8 +673,8 @@ type SpotOpenOrdersParam struct {
 
 // SpotOpenOrdersResponse :
 type SpotOpenOrdersResponse struct {
-	CommonResponse `json:",inline"`
 	Result         []SpotOpenOrdersResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotOpenOrdersResult :
@@ -725,8 +719,8 @@ func (s *SpotV1Service) SpotOpenOrders(ctx context.Context, param SpotOpenOrders
 
 // SpotGetWalletBalanceResponse :
 type SpotGetWalletBalanceResponse struct {
-	CommonResponse `json:",inline"`
 	Result         SpotGetWalletBalanceResult `json:"result"`
+	CommonResponse `json:",inline"`
 }
 
 // SpotGetWalletBalanceResult :

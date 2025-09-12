@@ -17,11 +17,11 @@ func TestClient(t *testing.T) {
 		method := http.MethodGet
 		status := http.StatusOK
 		respBody := struct {
-			RetCode          int    `json:"ret_code"`
 			RetMsg           string `json:"ret_msg"`
 			ExtCode          string `json:"ext_code"`
 			ExtInfo          string `json:"ext_info"`
 			TimeNow          string `json:"time_now"`
+			RetCode          int    `json:"ret_code"`
 			RateLimitStatus  int    `json:"rate_limit_status"`
 			RateLimitResetMs int    `json:"rate_limit_reset_ms"`
 			RateLimit        int    `json:"rate_limit"`
@@ -61,11 +61,11 @@ func TestClient(t *testing.T) {
 		method := http.MethodGet
 		status := http.StatusOK
 		respBody := struct {
-			RetCode          int    `json:"ret_code"`
 			RetMsg           string `json:"ret_msg"`
 			ExtCode          string `json:"ext_code"`
 			ExtInfo          string `json:"ext_info"`
 			TimeNow          string `json:"time_now"`
+			RetCode          int    `json:"ret_code"`
 			RateLimitStatus  int    `json:"rate_limit_status"`
 			RateLimitResetMs int    `json:"rate_limit_reset_ms"`
 			RateLimit        int    `json:"rate_limit"`
@@ -106,15 +106,15 @@ func TestClient(t *testing.T) {
 		method := http.MethodGet
 		status := http.StatusOK
 		respBody := struct {
-			RetCode          int         `json:"ret_code"`
+			Result           interface{} `json:"result"`
 			RetMsg           string      `json:"ret_msg"`
 			ExtCode          string      `json:"ext_code"`
 			ExtInfo          string      `json:"ext_info"`
 			TimeNow          string      `json:"time_now"`
+			RetCode          int         `json:"ret_code"`
 			RateLimitStatus  int         `json:"rate_limit_status"`
 			RateLimitResetMs int         `json:"rate_limit_reset_ms"`
 			RateLimit        int         `json:"rate_limit"`
-			Result           interface{} `json:"result"`
 		}{
 			RetCode:          10005,
 			RetMsg:           "Permission denied, please check your API key permissions",
