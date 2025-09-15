@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // V5WebsocketPrivateServiceI :

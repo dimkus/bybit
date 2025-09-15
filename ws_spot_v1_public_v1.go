@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SpotWebsocketV1PublicV1Service :

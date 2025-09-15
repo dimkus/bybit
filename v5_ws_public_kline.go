@@ -6,15 +6,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SubscribeKline :
-func (s *V5WebsocketPublicService) SubscribeKline(
+func (v *V5WebsocketPublicService) SubscribeKline(
 	key V5WebsocketPublicKlineParamKey,
-	f func(V5WebsocketPublicKlineResponse) error,
+	f func(*V5WebsocketPublicKlineResponse) error,
 ) (func() error, error) {
-	if err := s.addParamKlineFunc(key, f); err != nil {
+	if err := v.addParamKlineFunc(key, f); err != nil {
 		return nil, err
 	}
 	param := struct {
@@ -28,7 +28,7 @@ func (s *V5WebsocketPublicService) SubscribeKline(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
+	if err := v.writeMessage(websocket.TextMessage, buf); err != nil {
 		return nil, err
 	}
 	return func() error {
@@ -43,10 +43,10 @@ func (s *V5WebsocketPublicService) SubscribeKline(
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := v.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
 			return err
 		}
-		s.removeParamKlineFunc(key)
+		v.removeParamKlineFunc(key)
 		return nil
 	}, nil
 }
@@ -63,6 +63,7 @@ func (k *V5WebsocketPublicKlineParamKey) Topic() string {
 }
 
 // V5WebsocketPublicKlineResponse :
+// easyjson:json
 type V5WebsocketPublicKlineResponse struct {
 	Topic     string                       `json:"topic"`
 	Type      string                       `json:"type"`
@@ -70,7 +71,23 @@ type V5WebsocketPublicKlineResponse struct {
 	TimeStamp int64                        `json:"ts"`
 }
 
+// clear :
+func (r *V5WebsocketPublicKlineResponse) clear() {
+	r.Topic = ""
+	r.Type = ""
+	r.TimeStamp = 0
+	if cap(r.Data) > 40 {
+		r.Data = nil
+	} else {
+		for i := range r.Data {
+			r.Data[i] = V5WebsocketPublicKlineData{}
+		}
+		r.Data = r.Data[:0]
+	}
+}
+
 // V5WebsocketPublicKlineData :
+// easyjson:json
 type V5WebsocketPublicKlineData struct {
 	Interval  Interval `json:"interval"`
 	Open      string   `json:"open"`
@@ -83,6 +100,21 @@ type V5WebsocketPublicKlineData struct {
 	End       int64    `json:"end"`
 	Timestamp int64    `json:"timestamp"`
 	Confirm   bool     `json:"confirm"`
+}
+
+// clear :
+func (r *V5WebsocketPublicKlineData) clear() {
+	r.Interval = ""
+	r.Open = ""
+	r.Close = ""
+	r.High = ""
+	r.Low = ""
+	r.Volume = ""
+	r.Turnover = ""
+	r.Start = 0
+	r.End = 0
+	r.Timestamp = 0
+	r.Confirm = false
 }
 
 // Key :
@@ -100,22 +132,22 @@ func (r *V5WebsocketPublicKlineResponse) Key() V5WebsocketPublicKlineParamKey {
 }
 
 // addParamKlineFunc :
-func (s *V5WebsocketPublicService) addParamKlineFunc(key V5WebsocketPublicKlineParamKey, f func(V5WebsocketPublicKlineResponse) error) error {
-	if _, exist := s.paramKlineMap[key]; exist {
+func (v *V5WebsocketPublicService) addParamKlineFunc(key V5WebsocketPublicKlineParamKey, f func(*V5WebsocketPublicKlineResponse) error) error {
+	if _, exist := v.paramKlineMap[key]; exist {
 		return errors.New("already registered for this key")
 	}
-	s.paramKlineMap[key] = f
+	v.paramKlineMap[key] = f
 	return nil
 }
 
 // removeParamTradeFunc :
-func (s *V5WebsocketPublicService) removeParamKlineFunc(key V5WebsocketPublicKlineParamKey) {
-	delete(s.paramKlineMap, key)
+func (v *V5WebsocketPublicService) removeParamKlineFunc(key V5WebsocketPublicKlineParamKey) {
+	delete(v.paramKlineMap, key)
 }
 
 // retrievePositionFunc :
-func (s *V5WebsocketPublicService) retrieveKlineFunc(key V5WebsocketPublicKlineParamKey) (func(V5WebsocketPublicKlineResponse) error, error) {
-	f, exist := s.paramKlineMap[key]
+func (v *V5WebsocketPublicService) retrieveKlineFunc(key V5WebsocketPublicKlineParamKey) (func(*V5WebsocketPublicKlineResponse) error, error) {
+	f, exist := v.paramKlineMap[key]
 	if !exist {
 		return nil, errors.New("func not found")
 	}

@@ -108,13 +108,19 @@ func (c *Client) WithReferer(referer string) *Client {
 
 // Request :
 func (c *Client) Request(req *http.Request, dst interface{}) (err error) {
-	c.debugf("request: %v", req)
+	if c.debug {
+		c.debugf("request: %v", req)
+	}
 	resp, err := c.httpClient.Do(req)
-	c.debugf("response: %v", resp)
+	if c.debug {
+		c.debugf("response: %v", resp)
+	}
 	if err != nil {
 		return err
 	}
-	c.debugf("response status code: %v", resp.StatusCode)
+	if c.debug {
+		c.debugf("response status code: %v", resp.StatusCode)
+	}
 	defer func() {
 		cerr := resp.Body.Close()
 		if err == nil && cerr != nil {
@@ -140,7 +146,10 @@ func (c *Client) Request(req *http.Request, dst interface{}) (err error) {
 			return err
 		}
 
-		c.debugf("response body: %v", string(body))
+		if c.debug {
+			c.debugf("response body: %v", string(body))
+		}
+
 		return nil
 	case resp.StatusCode == http.StatusBadRequest:
 		return fmt.Errorf("%v: Need to send the request with GET / POST (must be capitalized)", ErrBadRequest)

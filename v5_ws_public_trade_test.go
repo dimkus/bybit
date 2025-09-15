@@ -49,7 +49,7 @@ func TestWebsocketV5Public_Trade(t *testing.T) {
 			V5WebsocketPublicTradeParamKey{
 				Symbol: SymbolV5BTCUSDT,
 			},
-			func(response V5WebsocketPublicTradeResponse) error {
+			func(response *V5WebsocketPublicTradeResponse) error {
 				assert.Equal(t, respBody["topic"], response.Topic)
 				return nil
 			},

@@ -7,15 +7,15 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SubscribeOrderBook :
-func (s *V5WebsocketPublicService) SubscribeOrderBook(
+func (v *V5WebsocketPublicService) SubscribeOrderBook(
 	key V5WebsocketPublicOrderBookParamKey,
-	f func(V5WebsocketPublicOrderBookResponse) error,
+	f func(*V5WebsocketPublicOrderBookResponse) error,
 ) (func() error, error) {
-	if err := s.addParamOrderBookFunc(key, f); err != nil {
+	if err := v.addParamOrderBookFunc(key, f); err != nil {
 		return nil, err
 	}
 	param := struct {
@@ -29,7 +29,7 @@ func (s *V5WebsocketPublicService) SubscribeOrderBook(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
+	if err := v.writeMessage(websocket.TextMessage, buf); err != nil {
 		return nil, err
 	}
 	return func() error {
@@ -44,10 +44,10 @@ func (s *V5WebsocketPublicService) SubscribeOrderBook(
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := v.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
 			return err
 		}
-		s.removeParamOrderBookFunc(key)
+		v.removeParamOrderBookFunc(key)
 		return nil
 	}, nil
 }
@@ -64,70 +64,76 @@ func (k *V5WebsocketPublicOrderBookParamKey) Topic() string {
 }
 
 // V5WebsocketPublicOrderBookResponse :
+// easyjson:json
 type V5WebsocketPublicOrderBookResponse struct {
-	Topic     string                         `json:"topic"`
-	Type      string                         `json:"type"`
-	Data      V5WebsocketPublicOrderBookData `json:"data"`
-	TimeStamp int64                          `json:"ts"`
+	Data      *V5WebsocketPublicOrderBookData `json:"data"`
+	Topic     string                          `json:"topic"`
+	Type      string                          `json:"type"`
+	TimeStamp int64                           `json:"ts"`
+}
+
+// clear :
+func (r *V5WebsocketPublicOrderBookResponse) clear() {
+	r.Topic = ""
+	r.Type = ""
+	r.TimeStamp = 0
+	if r.Data != nil {
+		r.Data.clear()
+	}
 }
 
 // V5WebsocketPublicOrderBookData :
+// easyjson:json
 type V5WebsocketPublicOrderBookData struct {
-	Symbol   SymbolV5                       `json:"s"`
-	Bids     V5WebsocketPublicOrderBookBids `json:"b"`
-	Asks     V5WebsocketPublicOrderBookAsks `json:"a"`
-	UpdateID int                            `json:"u"`
-	Seq      int                            `json:"seq"`
+	Symbol   SymbolV5           `json:"s"`
+	Bids     PriceSizeTupleList `json:"b"`
+	Asks     PriceSizeTupleList `json:"a"`
+	UpdateID int                `json:"u"`
+	Seq      int                `json:"seq"`
 }
 
-// V5WebsocketPublicOrderBookBids :
-type V5WebsocketPublicOrderBookBids []struct {
-	Price string `json:"price"`
-	Size  string `json:"size"`
+// PriceSizeTupleList
+//
+//easyjson:json
+type PriceSizeTupleList []PriceSizeTuple
+
+// PriceSizeTuple
+//
+//easyjson:json
+type PriceSizeTuple [2]string
+
+// GetPrice :
+func (p *PriceSizeTuple) GetPrice() string {
+	return p[0]
 }
 
-// UnmarshalJSON :
-func (b *V5WebsocketPublicOrderBookBids) UnmarshalJSON(data []byte) error {
-	parsedData := [][]string{}
-	if err := json.Unmarshal(data, &parsedData); err != nil {
-		return err
-	}
-	items := make(V5WebsocketPublicOrderBookBids, len(parsedData))
-	for i, item := range parsedData {
-		item := item
-		if len(item) != 2 {
-			return errors.New("so far len(item) must be 2, please check it on documents")
-		}
-		items[i].Price = item[0]
-		items[i].Size = item[1]
-	}
-	*b = items
-	return nil
+// GetSize :
+func (p *PriceSizeTuple) GetSize() string {
+	return p[1]
 }
 
-// V5WebsocketPublicOrderBookAsks :
-type V5WebsocketPublicOrderBookAsks []struct {
-	Price string `json:"price"`
-	Size  string `json:"size"`
+// clear :
+func (p *PriceSizeTupleList) clear() {
+	const maxCapacity = 40
+	if cap(*p) > maxCapacity {
+		*p = nil
+		return
+	}
+	*p = (*p)[:0]
 }
 
-// UnmarshalJSON :
-func (b *V5WebsocketPublicOrderBookAsks) UnmarshalJSON(data []byte) error {
-	parsedData := [][]string{}
-	if err := json.Unmarshal(data, &parsedData); err != nil {
-		return err
+// clear :
+func (r *V5WebsocketPublicOrderBookData) clear() {
+	r.Symbol = ""
+	r.UpdateID = 0
+	r.Seq = 0
+	if r.Bids != nil {
+		r.Bids.clear()
 	}
-	items := make(V5WebsocketPublicOrderBookAsks, len(parsedData))
-	for i, item := range parsedData {
-		item := item
-		if len(item) != 2 {
-			return errors.New("so far len(item) must be 2, please check it on documents")
-		}
-		items[i].Price = item[0]
-		items[i].Size = item[1]
+
+	if r.Asks != nil {
+		r.Asks.clear()
 	}
-	*b = items
-	return nil
 }
 
 // Key :
@@ -149,22 +155,22 @@ func (r *V5WebsocketPublicOrderBookResponse) Key() V5WebsocketPublicOrderBookPar
 }
 
 // addParamOrderBookFunc :
-func (s *V5WebsocketPublicService) addParamOrderBookFunc(key V5WebsocketPublicOrderBookParamKey, f func(V5WebsocketPublicOrderBookResponse) error) error {
-	if _, exist := s.paramOrderBookMap[key]; exist {
+func (v *V5WebsocketPublicService) addParamOrderBookFunc(key V5WebsocketPublicOrderBookParamKey, f func(*V5WebsocketPublicOrderBookResponse) error) error {
+	if _, exist := v.paramOrderBookMap[key]; exist {
 		return errors.New("already registered for this param")
 	}
-	s.paramOrderBookMap[key] = f
+	v.paramOrderBookMap[key] = f
 	return nil
 }
 
 // removeParamTradeFunc :
-func (s *V5WebsocketPublicService) removeParamOrderBookFunc(key V5WebsocketPublicOrderBookParamKey) {
-	delete(s.paramOrderBookMap, key)
+func (v *V5WebsocketPublicService) removeParamOrderBookFunc(key V5WebsocketPublicOrderBookParamKey) {
+	delete(v.paramOrderBookMap, key)
 }
 
 // retrievePositionFunc :
-func (s *V5WebsocketPublicService) retrieveOrderBookFunc(key V5WebsocketPublicOrderBookParamKey) (func(V5WebsocketPublicOrderBookResponse) error, error) {
-	f, exist := s.paramOrderBookMap[key]
+func (v *V5WebsocketPublicService) retrieveOrderBookFunc(key V5WebsocketPublicOrderBookParamKey) (func(*V5WebsocketPublicOrderBookResponse) error, error) {
+	f, exist := v.paramOrderBookMap[key]
 	if !exist {
 		return nil, errors.New("func not found")
 	}

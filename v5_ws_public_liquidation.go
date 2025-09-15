@@ -6,15 +6,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SubscribeLiquidation :
-func (s *V5WebsocketPublicService) SubscribeLiquidation(
+// IMPORTANT: This function is not thread-safe
+func (v *V5WebsocketPublicService) SubscribeLiquidation(
 	key V5WebsocketPublicLiquidationParamKey,
-	f func(V5WebsocketPublicLiquidationResponse) error,
+	f func(*V5WebsocketPublicLiquidationResponse) error,
 ) (func() error, error) {
-	if err := s.addParamLiquidationFunc(key, f); err != nil {
+	if err := v.addParamLiquidationFunc(key, f); err != nil {
 		return nil, err
 	}
 	param := struct {
@@ -28,7 +29,7 @@ func (s *V5WebsocketPublicService) SubscribeLiquidation(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
+	if err := v.writeMessage(websocket.TextMessage, buf); err != nil {
 		return nil, err
 	}
 	return func() error {
@@ -43,10 +44,10 @@ func (s *V5WebsocketPublicService) SubscribeLiquidation(
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := v.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
 			return err
 		}
-		s.removeParamLiquidationFunc(key)
+		v.removeParamLiquidationFunc(key)
 		return nil
 	}, nil
 }
@@ -62,6 +63,7 @@ func (k *V5WebsocketPublicLiquidationParamKey) Topic() string {
 }
 
 // V5WebsocketPublicLiquidationResponse :
+// easyjson:json
 type V5WebsocketPublicLiquidationResponse struct {
 	Topic     string                             `json:"topic"`
 	Type      string                             `json:"type"`
@@ -69,13 +71,29 @@ type V5WebsocketPublicLiquidationResponse struct {
 	TimeStamp int64                              `json:"ts"`
 }
 
+// clear :
+func (r *V5WebsocketPublicLiquidationResponse) clear() {
+	r.Topic = ""
+	r.Type = ""
+	r.TimeStamp = 0
+	if cap(r.Data) > 40 {
+		r.Data = nil
+	} else {
+		for i := range r.Data {
+			r.Data[i] = V5WebsocketPublicLiquidationData{}
+		}
+		r.Data = r.Data[:0]
+	}
+}
+
 // V5WebsocketPublicLiquidationData :
+// easyjson:json
 type V5WebsocketPublicLiquidationData struct {
-	Symbol      SymbolV5 `json:"symbol"`
-	Side        Side     `json:"side"`
-	Size        string   `json:"size"`
-	Price       string   `json:"price"`
-	UpdatedTime uint64   `json:"updatedTime"`
+	Symbol      SymbolV5 `json:"s"`
+	Side        Side     `json:"S"`
+	Size        string   `json:"v"`
+	Price       string   `json:"p"`
+	UpdatedTime int64    `json:"T"`
 }
 
 // Key :
@@ -92,22 +110,22 @@ func (r *V5WebsocketPublicLiquidationResponse) Key() V5WebsocketPublicLiquidatio
 }
 
 // addParamLiquidationFunc :
-func (s *V5WebsocketPublicService) addParamLiquidationFunc(key V5WebsocketPublicLiquidationParamKey, f func(V5WebsocketPublicLiquidationResponse) error) error {
-	if _, exist := s.paramLiquidationMap[key]; exist {
+func (v *V5WebsocketPublicService) addParamLiquidationFunc(key V5WebsocketPublicLiquidationParamKey, f func(*V5WebsocketPublicLiquidationResponse) error) error {
+	if _, exist := v.paramLiquidationMap[key]; exist {
 		return errors.New("already registered for this key")
 	}
-	s.paramLiquidationMap[key] = f
+	v.paramLiquidationMap[key] = f
 	return nil
 }
 
 // removeParamLiquidationFunc :
-func (s *V5WebsocketPublicService) removeParamLiquidationFunc(key V5WebsocketPublicLiquidationParamKey) {
-	delete(s.paramLiquidationMap, key)
+func (v *V5WebsocketPublicService) removeParamLiquidationFunc(key V5WebsocketPublicLiquidationParamKey) {
+	delete(v.paramLiquidationMap, key)
 }
 
 // retrievePositionFunc :
-func (s *V5WebsocketPublicService) retrieveLiquidationFunc(key V5WebsocketPublicLiquidationParamKey) (func(V5WebsocketPublicLiquidationResponse) error, error) {
-	f, exist := s.paramLiquidationMap[key]
+func (v *V5WebsocketPublicService) retrieveLiquidationFunc(key V5WebsocketPublicLiquidationParamKey) (func(*V5WebsocketPublicLiquidationResponse) error, error) {
+	f, exist := v.paramLiquidationMap[key]
 	if !exist {
 		return nil, errors.New("func not found")
 	}

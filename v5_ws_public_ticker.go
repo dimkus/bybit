@@ -6,15 +6,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SubscribeTicker :
-func (s *V5WebsocketPublicService) SubscribeTicker(
+func (v *V5WebsocketPublicService) SubscribeTicker(
 	key V5WebsocketPublicTickerParamKey,
-	f func(V5WebsocketPublicTickerResponse) error,
+	f func(*V5WebsocketPublicTickerResponse) error,
 ) (func() error, error) {
-	if err := s.addParamTickerFunc(key, f); err != nil {
+	if err := v.addParamTickerFunc(key, f); err != nil {
 		return nil, err
 	}
 	param := struct {
@@ -28,7 +28,7 @@ func (s *V5WebsocketPublicService) SubscribeTicker(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
+	if err := v.writeMessage(websocket.TextMessage, buf); err != nil {
 		return nil, err
 	}
 	return func() error {
@@ -43,10 +43,10 @@ func (s *V5WebsocketPublicService) SubscribeTicker(
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := v.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
 			return err
 		}
-		s.removeParamTickerFunc(key)
+		v.removeParamTickerFunc(key)
 		return nil
 	}, nil
 }
@@ -62,13 +62,24 @@ func (k *V5WebsocketPublicTickerParamKey) Topic() string {
 }
 
 // V5WebsocketPublicTickerResponse :
+// easyjson:json
 type V5WebsocketPublicTickerResponse struct {
-	Data      V5WebsocketPublicTickerData `json:"data"`
-	Topic     string                      `json:"topic"`
-	Type      string                      `json:"type"`
-	ID        string                      `json:"id,omitempty"`
-	TimeStamp int64                       `json:"ts"`
-	CrossSeq  int64                       `json:"cs,omitempty"`
+	Data      *V5WebsocketPublicTickerData `json:"data"`
+	Topic     string                       `json:"topic"`
+	Type      string                       `json:"type"`
+	ID        string                       `json:"id,omitempty"`
+	TimeStamp int64                        `json:"ts"`
+	CrossSeq  int64                        `json:"cs,omitempty"`
+}
+
+// clear :
+func (r *V5WebsocketPublicTickerResponse) clear() {
+	if r.Data != nil {
+		r.Data.clear()
+	}
+	r.Topic = ""
+	r.Type = ""
+	r.TimeStamp = 0
 }
 
 // V5WebsocketPublicTickerData :
@@ -79,7 +90,22 @@ type V5WebsocketPublicTickerData struct {
 	category      CategoryV5
 }
 
+// clear :
+func (v *V5WebsocketPublicTickerData) clear() {
+	if v.LinearInverse != nil {
+		v.LinearInverse.clear()
+	}
+	if v.Option != nil {
+		v.Option.clear()
+	}
+	if v.Spot != nil {
+		v.Spot.clear()
+	}
+	v.category = ""
+}
+
 // V5WebsocketPublicTickerLinearInverseResult :
+// easyjson:json
 type V5WebsocketPublicTickerLinearInverseResult struct {
 	Symbol                 SymbolV5      `json:"symbol"`
 	TickDirection          TickDirection `json:"tickDirection"`
@@ -107,7 +133,36 @@ type V5WebsocketPublicTickerLinearInverseResult struct {
 	PredictedDeliveryPrice string        `json:"predictedDeliveryPrice,omitempty"`
 }
 
+// clear :
+func (v *V5WebsocketPublicTickerLinearInverseResult) clear() {
+	v.Symbol = ""
+	v.TickDirection = ""
+	v.Price24hPercent = ""
+	v.LastPrice = ""
+	v.PrevPrice24h = ""
+	v.HighPrice24h = ""
+	v.LowPrice24h = ""
+	v.PrevPrice1h = ""
+	v.MarkPrice = ""
+	v.IndexPrice = ""
+	v.OpenInterest = ""
+	v.OpenInterestValue = ""
+	v.Turnover24h = ""
+	v.Volume24h = ""
+	v.NextFundingTime = ""
+	v.FundingRate = ""
+	v.Bid1Price = ""
+	v.Bid1Size = ""
+	v.Ask1Price = ""
+	v.Ask1Size = ""
+	v.DeliveryTime = ""
+	v.BasisRate = ""
+	v.DeliveryFeeRate = ""
+	v.PredictedDeliveryPrice = ""
+}
+
 // V5WebsocketPublicTickerOptionResult :
+// easyjson:json
 type V5WebsocketPublicTickerOptionResult struct {
 	Symbol                 SymbolV5 `json:"symbol"`
 	BidPrice               string   `json:"bidPrice"`
@@ -136,7 +191,37 @@ type V5WebsocketPublicTickerOptionResult struct {
 	Change24H              string   `json:"change24h"`
 }
 
+// clear :
+func (v *V5WebsocketPublicTickerOptionResult) clear() {
+	v.Symbol = ""
+	v.BidPrice = ""
+	v.BidSize = ""
+	v.BidIv = ""
+	v.AskPrice = ""
+	v.AskSize = ""
+	v.AskIv = ""
+	v.LastPrice = ""
+	v.HighPrice24H = ""
+	v.LowPrice24H = ""
+	v.MarkPrice = ""
+	v.IndexPrice = ""
+	v.MarkPriceIv = ""
+	v.UnderlyingPrice = ""
+	v.OpenInterest = ""
+	v.Turnover24H = ""
+	v.Volume24H = ""
+	v.TotalVolume = ""
+	v.TotalTurnover = ""
+	v.Delta = ""
+	v.Gamma = ""
+	v.Vega = ""
+	v.Theta = ""
+	v.PredictedDeliveryPrice = ""
+	v.Change24H = ""
+}
+
 // V5WebsocketPublicTickerSpotResult :
+// easyjson:json
 type V5WebsocketPublicTickerSpotResult struct {
 	Symbol        SymbolV5 `json:"symbol"`
 	LastPrice     string   `json:"lastPrice"`
@@ -147,6 +232,19 @@ type V5WebsocketPublicTickerSpotResult struct {
 	Turnover24H   string   `json:"turnover24h"`
 	Price24HPcnt  string   `json:"price24hPcnt"`
 	UsdIndexPrice string   `json:"usdIndexPrice"`
+}
+
+// clear :
+func (v *V5WebsocketPublicTickerSpotResult) clear() {
+	v.Symbol = ""
+	v.LastPrice = ""
+	v.HighPrice24H = ""
+	v.LowPrice24H = ""
+	v.PrevPrice24H = ""
+	v.Volume24H = ""
+	v.Turnover24H = ""
+	v.Price24HPcnt = ""
+	v.UsdIndexPrice = ""
 }
 
 // Key :
@@ -163,22 +261,22 @@ func (r *V5WebsocketPublicTickerResponse) Key() V5WebsocketPublicTickerParamKey 
 }
 
 // addParamTickerFunc :
-func (s *V5WebsocketPublicService) addParamTickerFunc(key V5WebsocketPublicTickerParamKey, f func(V5WebsocketPublicTickerResponse) error) error {
-	if _, exist := s.paramTickerMap[key]; exist {
+func (v *V5WebsocketPublicService) addParamTickerFunc(key V5WebsocketPublicTickerParamKey, f func(*V5WebsocketPublicTickerResponse) error) error {
+	if _, exist := v.paramTickerMap[key]; exist {
 		return errors.New("already registered for this key")
 	}
-	s.paramTickerMap[key] = f
+	v.paramTickerMap[key] = f
 	return nil
 }
 
 // removeParamTickerFunc :
-func (s *V5WebsocketPublicService) removeParamTickerFunc(key V5WebsocketPublicTickerParamKey) {
-	delete(s.paramTickerMap, key)
+func (v *V5WebsocketPublicService) removeParamTickerFunc(key V5WebsocketPublicTickerParamKey) {
+	delete(v.paramTickerMap, key)
 }
 
 // retrieveTickerFunc :
-func (s *V5WebsocketPublicService) retrieveTickerFunc(key V5WebsocketPublicTickerParamKey) (func(V5WebsocketPublicTickerResponse) error, error) {
-	f, exist := s.paramTickerMap[key]
+func (v *V5WebsocketPublicService) retrieveTickerFunc(key V5WebsocketPublicTickerParamKey) (func(*V5WebsocketPublicTickerResponse) error, error) {
+	f, exist := v.paramTickerMap[key]
 	if !exist {
 		return nil, errors.New("func not found")
 	}

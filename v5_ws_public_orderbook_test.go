@@ -55,7 +55,7 @@ func TestWebsocketV5Public_OrderBook(t *testing.T) {
 				Depth:  1,
 				Symbol: SymbolV5BTCUSDT,
 			},
-			func(response V5WebsocketPublicOrderBookResponse) error {
+			func(response *V5WebsocketPublicOrderBookResponse) error {
 				assert.Equal(t, respBody["topic"], response.Topic)
 				return nil
 			},

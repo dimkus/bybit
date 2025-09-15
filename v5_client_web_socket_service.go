@@ -2,7 +2,7 @@ package bybit
 
 import (
 	"context"
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // V5WebsocketServiceI :
@@ -33,11 +33,11 @@ func (s *V5WebsocketService) Public(ctx context.Context, category CategoryV5) (V
 		ctx:                 ctx,
 		connection:          c,
 		category:            category,
-		paramOrderBookMap:   make(map[V5WebsocketPublicOrderBookParamKey]func(V5WebsocketPublicOrderBookResponse) error),
-		paramKlineMap:       make(map[V5WebsocketPublicKlineParamKey]func(V5WebsocketPublicKlineResponse) error),
-		paramTickerMap:      make(map[V5WebsocketPublicTickerParamKey]func(V5WebsocketPublicTickerResponse) error),
-		paramTradeMap:       make(map[V5WebsocketPublicTradeParamKey]func(V5WebsocketPublicTradeResponse) error),
-		paramLiquidationMap: make(map[V5WebsocketPublicLiquidationParamKey]func(V5WebsocketPublicLiquidationResponse) error),
+		paramOrderBookMap:   make(map[V5WebsocketPublicOrderBookParamKey]func(*V5WebsocketPublicOrderBookResponse) error),
+		paramKlineMap:       make(map[V5WebsocketPublicKlineParamKey]func(*V5WebsocketPublicKlineResponse) error),
+		paramTickerMap:      make(map[V5WebsocketPublicTickerParamKey]func(*V5WebsocketPublicTickerResponse) error),
+		paramTradeMap:       make(map[V5WebsocketPublicTradeParamKey]func(*V5WebsocketPublicTradeResponse) error),
+		paramLiquidationMap: make(map[V5WebsocketPublicLiquidationParamKey]func(*V5WebsocketPublicLiquidationResponse) error),
 	}, nil
 }
 

@@ -53,7 +53,7 @@ func TestWebsocketV5Public_Kline(t *testing.T) {
 				Interval: Interval5,
 				Symbol:   SymbolV5BTCUSDT,
 			},
-			func(response V5WebsocketPublicKlineResponse) error {
+			func(response *V5WebsocketPublicKlineResponse) error {
 				assert.Equal(t, respBody["topic"], response.Topic)
 				return nil
 			},

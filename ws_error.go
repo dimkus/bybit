@@ -1,6 +1,6 @@
 package bybit
 
-import "github.com/gorilla/websocket"
+import "github.com/dimkus/websocket"
 
 // IsErrWebsocketClosed :
 func IsErrWebsocketClosed(err error) bool {

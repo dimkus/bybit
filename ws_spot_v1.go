@@ -1,7 +1,7 @@
 package bybit
 
 import (
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SpotWebsocketV1Service :

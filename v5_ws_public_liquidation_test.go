@@ -46,7 +46,7 @@ func TestWebsocketV5Public_Liquidation(t *testing.T) {
 			V5WebsocketPublicLiquidationParamKey{
 				Symbol: SymbolV5BTCUSDT,
 			},
-			func(response V5WebsocketPublicLiquidationResponse) error {
+			func(response *V5WebsocketPublicLiquidationResponse) error {
 				assert.Equal(t, respBody["topic"], response.Topic)
 				return nil
 			},

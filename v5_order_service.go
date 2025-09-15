@@ -418,7 +418,5 @@ func (s *V5OrderService) GetBorrowQuotaSpot(ctx context.Context, param V5GetBorr
 		return &res, err
 	}
 
-	fmt.Println(err)
-
 	return &res, nil
 }

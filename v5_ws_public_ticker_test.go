@@ -61,7 +61,7 @@ func TestWebsocketV5Public_Ticker(t *testing.T) {
 				V5WebsocketPublicTickerParamKey{
 					Symbol: SymbolV5BTCUSDT,
 				},
-				func(response V5WebsocketPublicTickerResponse) error {
+				func(response *V5WebsocketPublicTickerResponse) error {
 					assert.Equal(t, respBody["topic"], response.Topic)
 					testhelper.Compare(t, respBody["data"], response.Data.LinearInverse)
 					return nil
@@ -128,7 +128,7 @@ func TestWebsocketV5Public_Ticker(t *testing.T) {
 				V5WebsocketPublicTickerParamKey{
 					Symbol: SymbolV5BTCUSDT,
 				},
-				func(response V5WebsocketPublicTickerResponse) error {
+				func(response *V5WebsocketPublicTickerResponse) error {
 					assert.Equal(t, respBody["topic"], response.Topic)
 					testhelper.Compare(t, respBody["data"], response.Data.Option)
 					return nil
@@ -181,7 +181,7 @@ func TestWebsocketV5Public_Ticker(t *testing.T) {
 				V5WebsocketPublicTickerParamKey{
 					Symbol: SymbolV5BTCUSDT,
 				},
-				func(response V5WebsocketPublicTickerResponse) error {
+				func(response *V5WebsocketPublicTickerResponse) error {
 					assert.Equal(t, respBody["topic"], response.Topic)
 					testhelper.Compare(t, respBody["data"], response.Data.Spot)
 					return nil

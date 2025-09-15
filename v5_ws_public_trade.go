@@ -6,15 +6,15 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/gorilla/websocket"
+	"github.com/dimkus/websocket"
 )
 
 // SubscribeTrade :
-func (s *V5WebsocketPublicService) SubscribeTrade(
+func (v *V5WebsocketPublicService) SubscribeTrade(
 	key V5WebsocketPublicTradeParamKey,
-	f func(V5WebsocketPublicTradeResponse) error,
+	f func(*V5WebsocketPublicTradeResponse) error,
 ) (func() error, error) {
-	if err := s.addParamTradeFunc(key, f); err != nil {
+	if err := v.addParamTradeFunc(key, f); err != nil {
 		return nil, err
 	}
 	param := struct {
@@ -28,7 +28,7 @@ func (s *V5WebsocketPublicService) SubscribeTrade(
 	if err != nil {
 		return nil, err
 	}
-	if err := s.writeMessage(websocket.TextMessage, buf); err != nil {
+	if err := v.writeMessage(websocket.TextMessage, buf); err != nil {
 		return nil, err
 	}
 	return func() error {
@@ -43,10 +43,10 @@ func (s *V5WebsocketPublicService) SubscribeTrade(
 		if err != nil {
 			return err
 		}
-		if err := s.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
+		if err := v.writeMessage(websocket.TextMessage, []byte(buf)); err != nil {
 			return err
 		}
-		s.removeParamTradeFunc(key)
+		v.removeParamTradeFunc(key)
 		return nil
 	}, nil
 }
@@ -62,6 +62,7 @@ func (k *V5WebsocketPublicTradeParamKey) Topic() string {
 }
 
 // V5WebsocketPublicTradeResponse :
+// easyjson:json
 type V5WebsocketPublicTradeResponse struct {
 	Topic     string                       `json:"topic"`
 	Type      string                       `json:"type"`
@@ -69,7 +70,23 @@ type V5WebsocketPublicTradeResponse struct {
 	TimeStamp int64                        `json:"ts"`
 }
 
+// clear :
+func (r *V5WebsocketPublicTradeResponse) clear() {
+	r.Topic = ""
+	r.Type = ""
+	r.TimeStamp = 0
+	if cap(r.Data) > 40 {
+		r.Data = nil
+	} else {
+		for i := range r.Data {
+			r.Data[i] = V5WebsocketPublicTradeData{}
+		}
+		r.Data = r.Data[:0]
+	}
+}
+
 // V5WebsocketPublicTradeData :
+// easyjson:json
 type V5WebsocketPublicTradeData struct {
 	Symbol     SymbolV5 `json:"s"`
 	Side       Side     `json:"S"`
@@ -95,22 +112,22 @@ func (r *V5WebsocketPublicTradeResponse) Key() V5WebsocketPublicTradeParamKey {
 }
 
 // addParamTradeFunc :
-func (s *V5WebsocketPublicService) addParamTradeFunc(key V5WebsocketPublicTradeParamKey, f func(V5WebsocketPublicTradeResponse) error) error {
-	if _, exist := s.paramTradeMap[key]; exist {
+func (v *V5WebsocketPublicService) addParamTradeFunc(key V5WebsocketPublicTradeParamKey, f func(*V5WebsocketPublicTradeResponse) error) error {
+	if _, exist := v.paramTradeMap[key]; exist {
 		return errors.New("already registered for this key")
 	}
-	s.paramTradeMap[key] = f
+	v.paramTradeMap[key] = f
 	return nil
 }
 
 // removeParamTradeFunc :
-func (s *V5WebsocketPublicService) removeParamTradeFunc(key V5WebsocketPublicTradeParamKey) {
-	delete(s.paramTradeMap, key)
+func (v *V5WebsocketPublicService) removeParamTradeFunc(key V5WebsocketPublicTradeParamKey) {
+	delete(v.paramTradeMap, key)
 }
 
 // retrievePositionFunc :
-func (s *V5WebsocketPublicService) retrieveTradeFunc(key V5WebsocketPublicTradeParamKey) (func(V5WebsocketPublicTradeResponse) error, error) {
-	f, exist := s.paramTradeMap[key]
+func (v *V5WebsocketPublicService) retrieveTradeFunc(key V5WebsocketPublicTradeParamKey) (func(*V5WebsocketPublicTradeResponse) error, error) {
+	f, exist := v.paramTradeMap[key]
 	if !exist {
 		return nil, errors.New("func not found")
 	}
